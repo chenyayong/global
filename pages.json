@@ -10,7 +10,6 @@
 				"navigationBarTitleText": "新视界"
 					// #ifdef H5
 					,
-				"navigationBarTitleText": "Global嘉",
 				"navigationStyle": "custom"
 				// #endif
 			}
@@ -377,7 +376,7 @@
 					"style": {
 						"navigationBarTitleText": "我要代付"
 					}
-				},{
+				}, {
 					"path": "replace_pay/detail",
 					"style": {
 						"navigationBarTitleText": "代付"
@@ -449,7 +448,7 @@
 		"selectedColor": "#4E6EF3",
 		// #endif
 		// #ifdef H5
-		"selectedColor":"#00BE5F",
+		"selectedColor": "#00BE5F",
 		// #endif
 		"list": [{
 				"pagePath": "pages/index",

@@ -342,7 +342,7 @@
 		},
 		onShow() {
 			// #ifdef APP-PLUS
-			this.updateApp()
+			// this.updateApp()
 			// #endif
 			// #ifdef H5
 			let url = window.location.origin + '/h5';

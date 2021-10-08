@@ -217,6 +217,11 @@
                     "pathRewrite" : {
                         "^/url" : ""
                     }
+                },
+                "/api" : {
+                    "target" : "https://app.global3plus.com",
+                    "changeOrigin" : true,
+                    "secure" : false
                 }
             },
             "https" : false
