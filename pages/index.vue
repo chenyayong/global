@@ -44,6 +44,7 @@
 				<view class="font-26">{{item.ad_name}}</view>
 			</view>
 		</view>
+		<!-- #ifndef H5 -->
 		<view class="placard" @tap="to_placard">
 			<!-- #ifdef APP-PLUS -->
 			<image src="/static/placard.png" class="placard-image" mode="" />
@@ -61,6 +62,7 @@
 			</view>
 			<image src="/static/more.png" class="more" mode="" />
 		</view>
+		<!-- #endif -->
 		<view class="area" v-if="adv.length">
 			<view class="left">
 				<image v-if="adv[0]" :src="adv[0].ad_code" @tap="to_page(adv[0])"></image>

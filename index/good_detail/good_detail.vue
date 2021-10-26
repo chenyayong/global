@@ -75,7 +75,8 @@
 		</view>
 		<view class="good-title">
 			<view class="title ellipsis-two font-30">{{goods.goods_name}}</view>
-			<view class="share" @tap="to_share"></view>
+			
+			<!-- <view class="share" @tap="to_share"></view> -->
 		</view>
 		<view class="vice-title font-26 ellipsis">
 			{{goods.goods_remark}}
@@ -111,9 +112,11 @@
 			<!-- <view :class="[option[1].active?'active':'']" @tap="option_tap(1)">商品参数</view> -->
 		</view>
 		<view class="fixed-buttom" v-if="!specification">
+			<!-- #ifndef H5 -->
 			<view class="message font-24" @tap="server_img=true">
 				<image src="/static/message.png" mode="" />
 				聊天</view>
+			<!-- #endif -->
 			<view class="collect font-24" @tap="to_collect">
 				<!-- #ifdef APP-PLUS -->
 				<image src="/static/collect_active.png" v-if="collect" mode="" />

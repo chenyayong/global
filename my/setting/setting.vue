@@ -38,9 +38,11 @@
 			<view class="flex more" @tap="to_feedback">
 				<view class="font-30">意见反馈</view>
 			</view>
+			<!-- #ifndef H5 -->
 			<view class="flex more" @tap="to_about">
 				<view class="font-30">关于我们</view>
 			</view>
+			<!-- #endif -->
 		</view>
 		<button class="logout" @tap="logout">退出登录</button>
 		<!-- #ifdef APP-PLUS -->
