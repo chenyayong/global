@@ -390,16 +390,17 @@
 				uni.showLoading({
 					mask: true
 				})
-				this.$http('post|api/Order/stripeh5', {
+				this.$http('post|api/Order/paypalh5', {
 					order_id: this.order_id,
-					pay_radio: 'stripeh5'
+					pay_radio: 'paypal'
 				}).then(res => {
 					// console.log(res);
 					if (res.status == 1) {
 						uni.hideLoading()
-						uni.navigateTo({
-							url: '../../pages/paypal?id=' + res.id
+						uni.redirectTo({
+							url: '../../pages/paypal?order_id=' + res.result.order_id
 						})
+						// window.location.href = this.$image + '/mobile/index/pay_button?order_id=' + res.result.order_id
 					}
 				})
 			},
@@ -694,6 +695,7 @@
 					})
 				}).catch(err => {
 					uni.hideLoading()
+					console.log("post|api/Cart/cart3", err)
 					if (err.status != 1) {
 						this.$toastApp(err.msg)
 						this.$refs.pay.passworld = [];

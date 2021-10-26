@@ -2,7 +2,7 @@
 	<view>
 		<view class="login-title">
 			<view>欢迎登录</view>
-			<view class="language-box">
+			<!-- <view class="language-box">
 				<view class="language-item">
 					<view class="checks" @tap="showCountry = !showCountry,showLanguage = false">
 						<image style="border-radius: 50%;" :src="`/static/${checkCountry.icon}.jfif`"></image>
@@ -27,7 +27,7 @@
 						<view class="check-item" @tap="showLanguage=false,$toast('暂未开放')">En</view>
 					</view>
 				</view>
-			</view>
+			</view> -->
 		</view>
 		<view class="register">
 			<text>没有账号？</text>

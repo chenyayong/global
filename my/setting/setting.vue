@@ -42,14 +42,15 @@
 				<view class="font-30">关于我们</view>
 			</view>
 		</view>
+		<button class="logout" @tap="logout">退出登录</button>
 		<!-- #ifdef APP-PLUS -->
 		<!-- <view class="box mar-top-20">
 			<view class="flex" @tap="to_version">
 				<view class="font-30">版本号</view>
 				<view class="font-30">{{ver}}</view>
 			</view>
-		</view> -->
-		<button class="logout" @tap="logout">退出登录</button>
+		</view>
+		<button class="logout" @tap="logout">退出登录</button> -->
 		<!-- #endif -->
 		<image-cropper :src="tempFilePath" @confirm="confirm" @cancel="cancel"></image-cropper>
 	</view>

@@ -5,7 +5,7 @@
 				<image src="/static/input_search.png" mode="" />
 				<view class="font-26">搜索商品名称</view>
 			</view>
-			<view class="language-box">
+			<!-- <view class="language-box">
 				<view class="language-item">
 					<view class="checks" @tap="showCountry = !showCountry,showLanguage = false">
 						<image style="border-radius: 50%;" :src="`/static/${checkCountry.icon}.jfif`"></image>
@@ -30,7 +30,7 @@
 						<view class="check-item" @tap="showLanguage=false,$toast('暂未开放')">En</view>
 					</view>
 				</view>
-			</view>
+			</view> -->
 		</view>
 		<swiper class="swiper" :indicator-dots="true" :autoplay="true" indicator-color="rgba(255,255,255,0.3)"
 			indicator-active-color="rgb(255,255,255)" :interval="5000" :duration="1000">
@@ -341,6 +341,7 @@
 			// #endif
 		},
 		onShow() {
+
 			// #ifdef APP-PLUS
 			// this.updateApp()
 			// #endif

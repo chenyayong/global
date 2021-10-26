@@ -10,8 +10,8 @@
 			<!-- #endif -->
 			<!-- #ifndef H5 -->
 			<view class="bottom-box">
-				<button class="save" @tap="saveImg">保存图片</button>
-				<button class="share" @tap="isShare = true">发给朋友</button>
+				<!-- <button class="save" @tap="saveImg">保存图片</button> -->
+				<!-- <button class="share" @tap="isShare = true">发给朋友</button> -->
 			</view>
 			<!-- #endif -->
 		</view>

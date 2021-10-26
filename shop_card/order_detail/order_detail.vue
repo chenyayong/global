@@ -274,20 +274,20 @@ import payPassword from 'index/components/pay_password.vue'
 			},
 			paypal(){
 				console.log('国际支付',this.id);
-				// console.log(this.$image);
 				uni.showLoading({
-					mask:true
+					mask: true
 				})
-				this.$http('post|api/Order/stripeh5',{
+				this.$http('post|api/Order/paypalh5', {
 					order_id: this.id,
-					pay_radio: 'stripeh5'
+					pay_radio: 'paypal'
 				}).then(res => {
-					console.log(res);
+					// console.log(res);
 					if (res.status == 1) {
 						uni.hideLoading()
-						uni.navigateTo({
-							url:'../../pages/paypal?id=' + res.id
+						uni.redirectTo({
+							url: '../../pages/paypal?order_id=' + res.result.order_id
 						})
+						// window.location.href = this.$image + '/mobile/index/pay_button?order_id=' + res.result.order_id
 					}
 				})
 			},

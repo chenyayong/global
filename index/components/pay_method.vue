@@ -103,8 +103,8 @@
 				this.$emit("integral_pay");
 			},
 			paypal_pay() {
-				// this.$emit("paypal_pay");
-				this.$toast('暂未开放')
+				this.$emit("paypal_pay");
+				// this.$toast('暂未开放')
 			},
 			to_replace_pay(){
 				this.dialog = false;

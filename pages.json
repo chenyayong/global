@@ -7,7 +7,7 @@
 				"app-plus": {
 					"enablePullDownRefresh": true
 				},
-				"navigationBarTitleText": "新视界"
+				"navigationBarTitleText": "NV新视界"
 					// #ifdef H5
 					,
 				"navigationStyle": "custom"
@@ -247,6 +247,12 @@
 					"path": "integral/integral",
 					"style": {
 						"navigationBarTitleText": "积分抵扣券"
+					}
+				},
+				{
+					"path": "gift/gift",
+					"style": {
+						"navigationBarTitleText": "赠品"
 					}
 				},
 				{

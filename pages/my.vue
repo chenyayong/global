@@ -36,12 +36,19 @@
 					<view class="font-34 bold">{{users.total_amount||'-'}}</view>
 					<view class="font-22">我的消费</view>
 				</view>
+				
+				<!-- #ifdef H5 -->
 				<view @tap="to_integral">
 					<view class="font-34 bold">{{users.pay_points||'-'}}</view>
 					<view class="font-22">积分抵扣券</view>
 				</view>
-
+				<!-- #endif -->
+				
 				<!-- #ifdef APP-PLUS -->
+				<view @tap="to_gift">
+					<view class="font-34 bold">{{users.stock_sum}}</view>
+					<view class="font-22">赠品</view>
+				</view>
 				<view @tap="to_team">
 					<view class="font-34 bold">{{users.group_count||'-'}}</view>
 					<view class="font-22">我的客户</view>
@@ -72,11 +79,11 @@
 						<view class="font-24">培育补助</view>
 						<!-- <view class="font-30">{{users.agent}}</view> -->
 					</view>
-					<view class="right wallet-small" @tap="to_reward(4)">
+					<!-- <view class="right wallet-small" @tap="to_reward(4)">
 						<image src="/static/reward.png"></image>
 						<view class="font-24">奖励</view>
-						<!-- <view class="font-30">{{users.profit}}</view> -->
-					</view>
+						<view class="font-30">{{users.profit}}</view>
+					</view> -->
 				</view>
 			</view>
 		</view>
@@ -231,6 +238,7 @@
 			}
 		},
 		async onLoad() {
+			
 			await this.$http('get|api/MobileBase/checkLogin').then(res => {
 				//没登陆
 			}).catch(e => {

@@ -108,7 +108,7 @@
 		<view class="solid" style="margin:0"></view>
 		<view class="option">
 			<view :class="[option[0].active?'active':'']" @tap="option_tap(0)">商品介绍</view>
-			<view :class="[option[1].active?'active':'']" @tap="option_tap(1)">商品参数</view>
+			<!-- <view :class="[option[1].active?'active':'']" @tap="option_tap(1)">商品参数</view> -->
 		</view>
 		<view class="fixed-buttom" v-if="!specification">
 			<view class="message font-24" @tap="server_img=true">

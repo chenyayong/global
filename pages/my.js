@@ -23,6 +23,11 @@ export default {
 		});
 		//我的积分
 	},
+	to_gift() {
+			uni.navigateTo({
+				url: "/my/gift/gift"
+			});
+	},
 	to_team() {
 		uni.navigateTo({
 			url: "/my/my_team/my_team"

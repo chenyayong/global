@@ -12,8 +12,8 @@
 			};
 		},
 		onLoad(opt) {
-			// console.log(this.$image + '/mobile/index/checkout');
-			this.url = this.$image + '/mobile/index/checkout?id=' + opt.id
+			console.log('PayPal onLoad', this.url);
+			this.url = this.$image + '/mobile/index/pay_button?order_id=' + opt.order_id
 		}
 	}
 </script>
