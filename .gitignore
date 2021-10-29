@@ -9,6 +9,8 @@ node_modules
 .env.*.local
 
 /unpackage/dist
+/unpackage/release
+/unpackage/cache
 
 # Log files
 npm-debug.log*

@@ -345,7 +345,7 @@
 		onShow() {
 
 			// #ifdef APP-PLUS
-			// this.updateApp()
+			this.updateApp()
 			// #endif
 			// #ifdef H5
 			let url = window.location.origin + '/h5';
@@ -412,9 +412,13 @@
 				})
 			},
 			updateApp() {
+				plus.runtime.getProperty(plus.runtime.appid, function(wgtinfo) {
+					console.log('plus.runtime', wgtinfo)
+				})
 				this.$http('get|api/Index/app_version').then(res => {
 					if (res.status == 1) {
 						this.updateInfo = res.result.version
+						// console.log('this.updateInfo', res.result, this.updateInfo)
 						plus.runtime.getProperty(plus.runtime.appid, function(wgtinfo) {
 							// 获取当前app版本
 							_this.version = wgtinfo.version;
@@ -426,7 +430,7 @@
 										_this.clientType = 'android'
 										_this.showUpdate(res.result.version.app_log)
 									} else {
-										console.log('最新');
+										// console.log('最新');
 									}
 									break;
 								case 'ios':
@@ -445,6 +449,7 @@
 			},
 			isUpdate(curVersion, serVersion) { // 判断是否需要更新
 				let [serArray, curArray] = [serVersion.split("."), curVersion.split(".")]
+				console.log('isUpdate', serArray, curArray)
 				if (parseInt(serArray[0]) > parseInt(curArray[0])) {
 					return true
 				} else if (parseInt(serArray[1]) > parseInt(curArray[1])) {
@@ -466,13 +471,16 @@
 							let version = this.version.split('.');
 							let updateVersion = this.serverVersion.split('.');
 							// 大更新
+							// console.log('version updateVersion', version, updateVersion)
 							if (parseInt(updateVersion[0]) > parseInt(version[0]) || (parseInt(updateVersion[
 										0]) >= parseInt(version[0]) &&
 									parseInt(updateVersion[1]) > parseInt(version[1]))) {
+										console.log('_this.updateInfo.android_url', _this.updateInfo.android_url)
 								if (this.clientType == 'android') {
+									// plus.runtime.openURL('https://app.global3plus.com/Mobile/User/download.html')
 									plus.runtime.openURL(_this.updateInfo.android_url)
 								} else {
-									console.log(_this.updateInfo.ios_url)
+									// console.log(_this.updateInfo.ios_url)
 									plus.runtime.openURL(_this.updateInfo.ios_url)
 								}
 							} else if (parseInt(updateVersion[2]) > parseInt(version[2])) { // 小更新
