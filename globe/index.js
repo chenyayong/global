@@ -1,6 +1,7 @@
 export default {
 	install(Vue) {
 		// const serve = 'https://new3.sanxininfo.cn';
+		// const serve = 'https://test.global3plus.com'
 		const serve = 'https://app.global3plus.com';
 		// const serve='http://new3.futrtch.com';
 		//正式 http://new3.futrtch.com
@@ -36,7 +37,7 @@ export default {
 			return new Promise((_succ, _fail) => {
 				uni.request({
 					url: `${this.$serve}/${url}`,
-					// url:`${url}`,
+					// url:`/${url}`,
 					method,
 					dataType: "json",
 					timeout: 8000,
@@ -182,7 +183,9 @@ export default {
 			})
 			setTimeout(() => {
 				let url = encodeURIComponent(window.location.origin + '/h5')
-				let ur = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx6c9f225863d2dae2&redirect_uri=${url}&response_type=code&scope=snsapi_userinfo&state=STATE&connect_redirect=1#wechat_redirect`;
+				// let appid = 'wx6c9f225863d2dae2' // 生产环境
+				let appid = 'wxf922ca54b1cabef3' // 测试环境
+				let ur = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${url}&response_type=code&scope=snsapi_userinfo&state=STATE&connect_redirect=1#wechat_redirect`;
 				window.location.href = ur;
 				uni.hideLoading();
 			}, 1000)

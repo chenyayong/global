@@ -108,10 +108,14 @@
 			to_about() {
 				uni.navigateTo({
 					// #ifdef APP-PLUS
-					url: "/my/about/about?title=关于我们&id=1"
+					// 深圳快来互娱网络科技有限公司 id=13
+					// url: "/my/about/about?title=关于我们&id=13"
+					
+					// 深圳市创星视界科技有限公司 id=14
+					url: "/my/about/about?title=关于我们&id=14",
 					// #endif
 					// #ifdef H5
-					url: "/my/about/about?title=关于我们&id=13"
+					url: "/my/about/about?title=关于我们&id=1"
 					// #endif
 				});
 			},

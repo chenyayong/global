@@ -2,7 +2,7 @@
 	<view>
 		<view class="login-title">
 			<view>注册账号</view>
-			<view class="language-box">
+			<!-- <view class="language-box">
 				<view class="language-item">
 					<view class="checks" @tap="showCountry = !showCountry,showLanguage = false">
 						<image style="border-radius: 50%;" :src="`/static/${checkCountry.icon}.jfif`"></image>
@@ -27,7 +27,7 @@
 						<view class="check-item" @tap="showLanguage=false,$toast('暂未开放')">En</view>
 					</view>
 				</view>
-			</view>
+			</view> -->
 		</view>
 		<view class="register">
 			<text>已有账号？</text>
@@ -75,6 +75,10 @@
 				</view>
 				<view class="radio">
 					<radio-group @change="isChange">
+						<!-- 深圳快来互娱网络科技有限公司 -->
+						<!-- <radio color="#4E6EF3" value="agree" />我已阅读并同意<text @tap="go_agree(3)">网络服务协议</text>和<text @tap="go_agree(6)">隐私政策</text> -->
+						
+						<!-- 深圳市创星视界科技有限公司 -->
 						<radio color="#4E6EF3" value="agree" />我已阅读并同意<text @tap="go_agree(3)">网络服务协议</text>和<text @tap="go_agree(4)">隐私政策</text>
 					</radio-group>
 				</view>
