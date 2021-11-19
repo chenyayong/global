@@ -183,8 +183,8 @@ export default {
 			})
 			setTimeout(() => {
 				let url = encodeURIComponent(window.location.origin + '/h5')
-				// let appid = 'wx6c9f225863d2dae2' // 生产环境
-				let appid = 'wxf922ca54b1cabef3' // 测试环境
+				let appid = 'wx6c9f225863d2dae2' // 生产环境
+				// let appid = 'wxf922ca54b1cabef3' // 测试环境
 				let ur = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${url}&response_type=code&scope=snsapi_userinfo&state=STATE&connect_redirect=1#wechat_redirect`;
 				window.location.href = ur;
 				uni.hideLoading();
