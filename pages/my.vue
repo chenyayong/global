@@ -270,18 +270,18 @@
 			this.$http('get|api/User/contribution_points').then(res => {
 				// console.log('贡献值',res);
 			})
-			this.$http('get|api/user/check_partner').then(res => {
-				console.log(res);
-				this.conditions = {
-					title: '你已经达到条件',
-					message: res.result.desc,
-					botton: '去升级',
-					dialog: true
-				}
-				this.is_ok = true;
-			}).catch(e => {
-				console.log(e);
-			})
+			// this.$http('get|api/user/check_partner').then(res => {
+			// 	console.log(res);
+			// 	this.conditions = {
+			// 		title: '你已经达到条件',
+			// 		message: res.result.desc,
+			// 		botton: '去升级',
+			// 		dialog: true
+			// 	}
+			// 	this.is_ok = true;
+			// }).catch(e => {
+			// 	console.log(e);
+			// })
 		},
 		methods: {
 			...my,

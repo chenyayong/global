@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<view class="header">
-			<view class="rule font-24" @tap="to_rule">积分规则</view>
+			<!-- <view class="rule font-24" @tap="to_rule">积分规则</view> -->
 			<view class="yue">
 				<view class="font-26">积分抵扣券</view>
 				<view class="font-72 bold">{{points}}</view>

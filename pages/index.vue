@@ -423,6 +423,7 @@
 							// 获取当前app版本
 							_this.version = wgtinfo.version;
 							// 判断手机类型
+							console.log(`app当前版本号:${_this.version}`, `热更新版本号: ${res.result.version.app_version}` )
 							switch (uni.getSystemInfoSync().platform) {
 								case 'android':
 									if (_this.isUpdate(_this.version, res.result.version.app_version)) {
@@ -449,7 +450,7 @@
 			},
 			isUpdate(curVersion, serVersion) { // 判断是否需要更新
 				let [serArray, curArray] = [serVersion.split("."), curVersion.split(".")]
-				console.log('isUpdate', serArray, curArray)
+				// console.log('isUpdate', serArray, curArray)
 				if (parseInt(serArray[0]) > parseInt(curArray[0])) {
 					return true
 				} else if (parseInt(serArray[1]) > parseInt(curArray[1])) {

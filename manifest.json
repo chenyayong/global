@@ -2,7 +2,7 @@
     "name" : "NV新视界",
     "appid" : "__UNI__1DFF7F7",
     "description" : "",
-    "versionName" : "1.0.1",
+    "versionName" : "1.0.2",
     "versionCode" : 1001,
     "transformPx" : false,
     /* 5+App特有相关 */
@@ -237,6 +237,6 @@
             }
         },
         "title" : "Global嘉",
-        "domain" : "https://test.global3plus.com"
+        "domain" : "https://app.global3plus.com"
     }
 }
