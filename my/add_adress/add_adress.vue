@@ -30,12 +30,14 @@
         <!-- #ifdef APP-PLUS -->
         <image
           class="check-def"
+					@tap="to_default"
           :src="is_check ? '/static/is_check.png' : '/static/sel_icon.png'"
         ></image>
         <!-- #endif -->
         <!-- #ifdef H5 -->
         <image
           class="check-def"
+					@tap="to_default"
           :src="is_check ? '/static/h5_is_check.png' : '/static/sel_icon.png'"
         ></image>
         <!-- #endif -->
@@ -84,6 +86,9 @@ export default {
       this.adress_arr = e
       this.region = text
     },
+		to_default(){
+			this.is_check = !this.is_check
+		},
     save() {
       if (!this.consignee) {
         this.$toastApp('请输入收货人姓名')
