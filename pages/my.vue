@@ -46,7 +46,7 @@
 				
 				<!-- #ifdef APP-PLUS -->
 				<view @tap="to_gift">
-					<view class="font-34 bold">{{users.stock_sum}}</view>
+					<view class="font-34 bold">{{users.stock_sum||'-'}}</view>
 					<view class="font-22">赠品</view>
 				</view>
 				<view @tap="to_team">

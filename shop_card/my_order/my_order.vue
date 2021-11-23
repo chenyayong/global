@@ -54,7 +54,7 @@
 					</view>
  				</view>
 				<view class="option-buttom font-30">
-					<view class="option-1" v-if="item.cancel_btn==1&&item.pay_status!=1" @tap="cancel(item)">取消订单</view>
+					<!-- <view class="option-1" v-if="item.cancel_btn==1&&item.pay_status!=1" @tap="cancel(item)">取消订单</view> -->
 					<view class="option-1" v-if="item.cancel_btn==1&&item.pay_status==1&&item.order_prom_type==0" @tap="cancel_pay(item)">
 						取消订单
 						<!-- 已支付 -->
