@@ -413,17 +413,18 @@
 			},
 			updateApp() {
 				plus.runtime.getProperty(plus.runtime.appid, function(wgtinfo) {
-					// console.log('plus.runtime', wgtinfo)
+					console.log('plus.runtime', wgtinfo)
 				})
 				this.$http('get|api/Index/app_version').then(res => {
 					if (res.status == 1) {
+						// console.log('app_version', res)
 						this.updateInfo = res.result.version
 						// console.log('this.updateInfo', res.result, this.updateInfo)
 						plus.runtime.getProperty(plus.runtime.appid, function(wgtinfo) {
 							// 获取当前app版本
 							_this.version = wgtinfo.version;
 							// 判断手机类型
-							console.log(`app当前版本号:${_this.version}`, `热更新版本号: ${res}` )
+							console.log(`app当前版本号:${_this.version}`, `热更新版本号: ${res.result.version.app_version}` )
 							switch (uni.getSystemInfoSync().platform) {
 								case 'android':
 									if (_this.isUpdate(_this.version, res.result.version.app_version)) {
