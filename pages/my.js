@@ -1,4 +1,10 @@
 export default {
+	to_information() {
+		uni.navigateTo({
+			url: "/my/information/information"
+			//公司资讯群
+		});
+	},
 	to_message() {
 		uni.navigateTo({
 			url: "/my/news/news"

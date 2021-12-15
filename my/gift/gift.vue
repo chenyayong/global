@@ -49,12 +49,13 @@
 					this.new_points = res.result.new_points
 					this.stock_sum = res.result.stock_sum
 					let stock_points_log = res.result.stock_points_log
-					
 					if(stock_points_log && stock_points_log.length){
 						this.list = [...this.list, ...stock_points_log]
+						// this.list = stock_points_log.map( e => e).concat(stock_points_log.map( e => e),stock_points_log.map( e => e),stock_points_log.map( e => e))
 					}else{
 						this.noMore = true
 					}
+					console.log('stock_points',this.list)
 				}).finally(() => {
 					// setTimeout(() => {
 					// 	uni.hideLoading()
@@ -66,7 +67,7 @@
 				this.get_list();
 			}
 		},
-		onShow(){
+		onLoad() {
 			this.get_list();
 		},
 		onReachBottom() {

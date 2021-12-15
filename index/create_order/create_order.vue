@@ -151,10 +151,10 @@
 					<text>积分抵扣</text>
 					<text class="red-text">-¥{{(+order_data.pointsFee).toFixed(2)}}</text>
 				</view> -->
-				<view class="info-li flex-row">
+				<!-- <view class="info-li flex-row">
 					<text>余额</text>
 					<text class="red-text">-¥{{(+order_data.balance).toFixed(2)}}</text>
-				</view>
+				</view> -->
 				<!-- <view class="info-li flex-row">
 					<text>消费抵扣券</text>
 					<text class="red-text">-¥{{(+order_data.deduction_amount).toFixed(2)}}</text>

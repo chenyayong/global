@@ -44,6 +44,7 @@
 		{
 			"path": "pages/my",
 			"style": {
+				"enablePullDownRefresh": true,
 				"navigationBarTitleText": "我的"
 					// #ifdef H5
 					,
@@ -199,6 +200,13 @@
 					"path": "news/news",
 					"style": {
 						"navigationBarTitleText": "系统消息"
+					}
+				},
+				{
+					"path": "information/information",
+					"style": {
+						"navigationBarTitleText": "公司资讯群",
+						"disableScroll": true
 					}
 				},
 				{

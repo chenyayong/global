@@ -2,7 +2,7 @@
     "name" : "NV新视界",
     "appid" : "__UNI__1DFF7F7",
     "description" : "",
-    "versionName" : "1.0.3",
+    "versionName" : "1.0.5",
     "versionCode" : 1001,
     "transformPx" : false,
     /* 5+App特有相关 */
@@ -13,7 +13,7 @@
         "usingComponents" : true,
         "nvueCompiler" : "uni-app",
         "compilerVersion" : 1,
-        "splashscreen" : {
+        "splashscreen-" : {
             "alwaysShowBeforeRender" : true,
             "waiting" : false,
             "autoclose" : true,
