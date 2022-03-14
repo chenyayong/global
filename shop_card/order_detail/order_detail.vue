@@ -122,20 +122,21 @@
 			</view>
 			<view>
 				<view>积分抵扣</view>
-				<view>-￥{{order_info.integral_money}}</view>
+				<view>-￥{{order_info.order_integral_money}}</view>
+				<!-- <view>-￥{{order_info.integral_money}}</view> -->
 			</view>
-			<view>
+			<!-- <view>
 				<view>消费抵扣券</view>
 				<view>-￥{{order_info.deduction_amount}}</view>
-			</view>
+			</view> -->
 			<view>
 				<view>实付现金</view>
 				<view>￥{{order_info.order_amount}}</view>
 			</view>
-			<view>
+			<!-- <view>
 				<view>实付余额</view>
 				<view>￥{{order_info.user_money}}</view>
-			</view>
+			</view> -->
 		</view>
 		<view class="create-time font-26" v-if="order_info.buy_user_id">
 			<view>报单人姓名：{{buy_name.realname}}</view>

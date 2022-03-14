@@ -1,6 +1,7 @@
 <template>
 	<view class="dialog" v-if="dialog" @tap="dialog=false">
-		<view class="content" @tap.stop="none">
+		
+		<view class="content"  @tap.stop="none">
 			<image :src="src" class="invite" mode="widthFix" />
 			<!-- #ifdef H5 -->
 			<view class="bottom font-30">

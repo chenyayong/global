@@ -16,12 +16,37 @@
 			<view class="font-30" style="margin-top:50rpx">提现金额</view>
 			<view class="account-input-box">
 				<view class="font-48">￥</view>
-				<input class="account-input inline" v-model="option[option_active].from.money" type="number" :placeholder="`请输入金额`" />
+				<input
+					class="account-input inline"
+					@blur="handleUserMoney"
+					v-model="option[option_active].from.money"
+					type="number"
+					:placeholder="`请输入金额`"
+				/>
 			</view>
+
 			<view class="font-26 flex">
-				<view>可提现余额{{ user_money }}</view>
+				<view>提现只限100的倍数 可提现余额{{ user_money }}</view>
 				<view class="all-with" @tap="all_number">全部提现</view>
 			</view>
+
+			<!-- <view class="font-26 flex">
+				<view>
+					实时股价
+					<text class="all-with" style="margin-left: 10rpx;">{{ stockPrice }}</text>
+				</view>
+			</view> -->
+
+			<!-- <view class="font-30" style="margin-top:50rpx">佣金提现</view>
+			<view class="uni-list">
+				<radio-group @change="radioChange">
+					<label class="uni-list-cell uni-list-cell-pd" v-for="(item, index) in items" :key="item.value">
+						<view><radio :value="item.value" :checked="index === current" /></view>
+						<view>{{ item.name }}</view>
+					</label>
+				</radio-group>
+			</view> -->
+
 			<view class="buttom font-32" @tap="subimt">立即提现</view>
 		</view>
 		<view class="rich-box"><rich-text :nodes="contxt"></rich-text></view>
@@ -42,6 +67,21 @@ import noPassword from '../../index/components/no_password.vue';
 export default {
 	data() {
 		return {
+			items: [
+				{
+					name: '100%现金（100%税款）',
+					value: 0
+				},
+				{
+					name: '50%现金+50%股票（50%税款）',
+					value: 1
+				},
+				{
+					name: '100%股票（额外5%股票，0税款，额外每月广告收益5%（根据提现股票数量分配）',
+					value: 2
+				}
+			],
+			current: 0,
 			contxt: '',
 			option: [
 				{
@@ -97,18 +137,26 @@ export default {
 			charge: 0,
 			pay_dialog: false,
 			no_password: false,
-			payPwd: ''
+			payPwd: '',
+			stockPrice: '',
+			timer: null
 		};
+	},
+	onReady() {
+		this.getStockPrice();
+	},
+	onUnload() {
+		clearInterval(this.timer)
 	},
 	async onShow() {
 		await this.getRule();
 		await this.$http('get|api/User/is_paypwd')
 			.then(res => {
 				this.no_password = true; //没有密码
-				console.log('is_paypwd success', res)
+				console.log('is_paypwd success', res);
 			})
-			.catch((err) => {
-				console.log('is_paypwd error', err)
+			.catch(err => {
+				console.log('is_paypwd error', err);
 				this.get_type().then(_ => {
 					this.option[0].name = `微信${this.user.nickname}`;
 				});
@@ -131,6 +179,29 @@ export default {
 		}
 	},
 	methods: {
+		radioChange(e) {
+			this.current = e.detail.value;
+		},
+		getStockPrice() {
+			this.timer = setInterval(() => {
+				this.$http('get|api/User/withdrawals', {
+					bank_type: this.option[this.option_active].bank_type
+				}).then(res => {
+					this.stockPrice = res.result.stockPrice;
+					console.log('getStockPrice', res)
+				});
+			}, 8000);
+		},
+		handleUserMoney(e) {
+			let value = parseInt(e.detail.value);
+			let remainder = value % 100;
+			if (remainder !== 0 || value === 0) {
+				uni.showToast({
+					title: '提现只限100的倍数',
+					icon: 'none'
+				});
+			}
+		},
 		getRule() {
 			this.$http('post|api/Article/regulation', {
 				id: 9
@@ -139,10 +210,11 @@ export default {
 			});
 		},
 		get_type() {
-			console.log('bank_type---', this.option_active, this.option[this.option_active].bank_type)
+			console.log('bank_type---', this.option_active, this.option[this.option_active].bank_type);
 			return this.$http('get|api/User/withdrawals', {
 				bank_type: this.option[this.option_active].bank_type
 			}).then(res => {
+				// console.log('get_type', res)
 				//withdraw_type  1是银行卡，2是微信，3是支付宝
 				res.result.withdraw_type.forEach(el => {
 					switch (el) {
@@ -166,6 +238,7 @@ export default {
 					let find = this.option.findIndex(ro => ro.bank_type == type);
 					this.info_option(withdraw_type);
 				}
+				this.stockPrice = res.result.stockPrice;
 				this.user_money = res.result.user_money;
 				this.charge = +res.result.charge;
 				this.distribut_min = +res.result.distribut_min;
@@ -259,6 +332,7 @@ export default {
 				switch (this.option_active) {
 					case 0:
 						this.option[0].from.paypwd = this.payPwd;
+						this.option[0].from.current = this.current;
 						this.$http('post|api/User/withdrawals', this.option[0].from)
 							.then(res => {
 								this.$toastApp(res.msg);
@@ -272,6 +346,7 @@ export default {
 					case 1:
 					case 2:
 						this.option[this.option_active].from.paypwd = this.payPwd;
+						this.option[this.option_active].from.current = this.current;
 						this.$http('post|api/User/withdrawals', this.option[this.option_active].from)
 							.then(res => {
 								this.$toastApp(res.msg);
@@ -359,6 +434,13 @@ export default {
 <style lang="scss">
 page {
 	background-color: #f7f7f7;
+}
+.uni-list-cell {
+	font-size: 28rpx;
+	display: flex;
+	align-items: center;
+	margin-top: 20rpx;
+	// justify-content: center;
 }
 
 .content-box {

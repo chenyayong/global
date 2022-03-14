@@ -111,7 +111,7 @@
 					// 深圳快来互娱网络科技有限公司 id=13
 					// url: "/my/about/about?title=关于我们&id=13"
 					
-					// 深圳市创星视界科技有限公司 id=14
+					// 星深圳市创视界科技有限公司 id=14
 					url: "/my/about/about?title=关于我们&id=14",
 					// #endif
 					// #ifdef H5

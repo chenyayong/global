@@ -2,8 +2,8 @@
     "name" : "NV新视界",
     "appid" : "__UNI__1DFF7F7",
     "description" : "",
-    "versionName" : "1.0.5",
-    "versionCode" : 1001,
+    "versionName" : "1.0.16",
+    "versionCode" : 1002,
     "transformPx" : false,
     /* 5+App特有相关 */
     "app-plus" : {
@@ -81,14 +81,14 @@
                 },
                 "share" : {
                     "weixin" : {
-                        "appid" : "wx273b71afd5128571",
+                        "appid" : "wx76eaac5988f003ca",
                         "UniversalLinks" : "https://app.global3.cn/ulink/"
                     }
                 },
                 "payment" : {
                     "weixin" : {
                         "__platform__" : [ "ios", "android" ],
-                        "appid" : "wx273b71afd5128571",
+                        "appid" : "wx76eaac5988f003ca",
                         "UniversalLinks" : "https://app.global3.cn/ulink/"
                     },
                     "alipay" : {
@@ -99,7 +99,7 @@
                     "weixin" : {
                         "appid" : "wxb9f4b833fce94107",
                         "appsecret" : "c4b0c97e98cf303d04b56d055bc7d278",
-                        "UniversalLinks" : ""
+                        "UniversalLinks" : "https://app.global3.cn/ulink/"
                     }
                 },
                 "ad" : {}
@@ -108,9 +108,9 @@
                 "androidStyle" : "default",
                 "iosStyle" : "storyboard",
                 "android" : {
-                    "hdpi" : "unpackage/splash/start480.png",
-                    "xhdpi" : "unpackage/splash/start720.png",
-                    "xxhdpi" : "unpackage/splash/start1080.png"
+                    "hdpi" : "unpackage/splash/start480.9.png",
+                    "xhdpi" : "unpackage/splash/start720.9.png",
+                    "xxhdpi" : "unpackage/splash/start1080.9.png"
                 },
                 "ios" : {
                     "storyboard" : "unpackage/splash/Global3.zip"
@@ -222,6 +222,7 @@
                 },
                 "/api" : {
                     "target" : "https://app.global3plus.com",
+                    // "target": "https://test.global3plus.com",
                     "changeOrigin" : true,
                     "secure" : false
                 }

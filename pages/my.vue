@@ -44,10 +44,10 @@
 				<!-- #endif -->
 
 				<!-- #ifdef APP-PLUS -->
-				<view @tap="to_gift">
+				<!-- <view @tap="to_gift">
 					<view class="font-34 bold">{{ users.stock_sum || '-' }}</view>
 					<view class="font-22">赠品</view>
-				</view>
+				</view> -->
 				<view @tap="to_team">
 					<view class="font-34 bold">{{ users.group_count || '-' }}</view>
 					<view class="font-22">我的客户</view>
@@ -56,9 +56,14 @@
 					<view class="font-34 bold">{{ users.contribution_points || '-' }}</view>
 					<view class="font-22">贡献值</view>
 				</view>
+				<view @tap="to_experience">
+					<view class="font-34 bold">{{ users.exp_value || '-' }}</view>
+					<view class="font-22">联创积分</view>
+				</view>
 				<!-- #endif -->
 			</view>
 		</view>
+
 		<!-- #ifdef APP-PLUS -->
 		<view class="wallet">
 			<view class="my-wallet" @tap="to_mywallet">
@@ -78,14 +83,19 @@
 						<!-- <view class="font-30">{{users.agent}}</view> -->
 					</view>
 					<!-- <view class="right wallet-small" @tap="to_reward(4)">
-						<image src="/static/reward.png"></image>
-						<view class="font-24">奖励</view>
-						<view class="font-30">{{users.profit}}</view>
-					</view> -->
+								<image src="/static/reward.png"></image>
+								<view class="font-24">奖励</view>
+								<view class="font-30">{{users.profit}}</view>
+							</view> -->
+					<view class="wallet-small" @tap="to_gift">
+						<image src="/static/balance_icon.png"></image>
+						<view class="font-24">赠品</view>
+					</view>
 				</view>
 			</view>
 		</view>
 		<!-- #endif -->
+
 		<!-- #ifdef H5 -->
 		<view class="order">
 			<view class="my-order" @tap="to_order">
@@ -121,6 +131,59 @@
 			</view>
 		</view>
 		<!-- #endif -->
+
+		<!-- #ifdef APP -->
+		<view class="wallet" style="margin-top: 20rpx;" v-if="jukerData && jukerData.length">
+			<view class="my-wallet">
+				<view class="font-30">JUKER祝播客</view>
+				<!-- <view class="font-26"></view> -->
+			</view>
+			<view class="juker wallt-msg">
+				<view class="msg-item" v-for="(item, index) in jukerData" :key="index">
+					<view class="font-24 msg-item-tips">{{ item.phase }}</view>
+					<view class="wallet-small">
+						<image src="/static/juker-ticket.png"></image>
+						<view class="font-24">祝播券</view>
+						<view class="font-24">{{ item.give_sum }}</view>
+					</view>
+					<view class="wallet-small">
+						<picker
+							:disabled="item.status === 2"
+							:value="bonusIndexs[index]"
+							@change="bindTimerChange($event, index)"
+							range-key="pick_time"
+							:range="bonusList[index]"
+						>
+							<image src="/static/juker-timer.png"></image>
+							<view class="font-24">分红时间</view>
+							<view class="font-24" v-if="item.status === 1">设置开始时间</view>
+							<view class="font-24" v-if="item.status === 2" style="text-align: left;">
+								<view>{{ item.start_time }} -</view>
+								<view>{{ item.end_time }}</view>
+							</view>
+							<!-- <view class="uni-input">{{ array[index] }}</view> -->
+						</picker>
+
+						<!-- <view class="font-24" style="text-align: left;">
+							<view>2022/12/12 - </view>
+							<view>2022/12/12</view>
+						</view> -->
+					</view>
+					<view class="wallet-small">
+						<image src="/static/juker-date.png"></image>
+						<view class="font-24">分红周期(月)</view>
+						<view class="font-24">{{ item.valid_month + item.free_month }}个月</view>
+					</view>
+					<view class="wallet-small">
+						<image src="/static/juker-money.png"></image>
+						<view class="font-24">累计分红金额</view>
+						<view class="font-24">0</view>
+					</view>
+				</view>
+			</view>
+		</view>
+		<!-- #endif -->
+
 		<view class="wallet" style="margin-top: 20rpx;" v-if="operator">
 			<view class="my-wallet" @tap="to_operate">
 				<view class="font-30">所属运营中心</view>
@@ -213,6 +276,9 @@ import noConditions from 'components/no_conditions.vue';
 export default {
 	data() {
 		return {
+			jukerData: [],
+			bonusIndexs: [],
+			bonusList: [],
 			operator: {},
 			users: {
 				p_name: {}
@@ -250,19 +316,125 @@ export default {
 			});
 	},
 	onShow() {
-		this.show()
+		this.juker_list();
+		this.show();
 	},
 	onPullDownRefresh() {
 		this.show();
 		setTimeout(() => {
-			uni.stopPullDownRefresh()
+			uni.stopPullDownRefresh();
 			uni.showToast({
-				title:'刷新成功',
+				title: '刷新成功',
 				icon: 'none'
-			})
-		}, 1000)
+			});
+		}, 1000);
 	},
 	methods: {
+		bindTimerChange(item, index) {
+			this.bonusIndexs[index] = item.detail.value;
+			console.log('bindTimerChange', this.bonusIndexs);
+			uni.showModal({
+				title: '提示',
+				content: '请注意确认后不能再提交了',
+				success: res => {
+					if (res.confirm) {
+						const data = this.jukerData[index];
+						const data2 = this.bonusList[index][this.bonusIndexs[index]];
+						console.log('提示', data2);
+						this.check_time(data, data2);
+						// console.log('用户点击确定');
+					} else if (res.cancel) {
+						console.log('用户点击取消');
+					}
+				}
+			});
+		},
+		check_time(data, data2) {
+			this.$http('post|api/user/check_time', {
+				log_id: data.log_id,
+				start_time: data2.start_time,
+				end_time: data2.end_time
+			}).then(res => {
+				console.log('check_time', res);
+				this.juker_list();
+			}).catch((res) => {
+				console.log('check_time catch', res);
+			});
+		},
+		juker_list() {
+			this.$http('get|api/user/juker_list')
+				.then(res => {
+					this.jukerData = res.result;
+					if (this.jukerData && this.jukerData.length) {
+						this.bonusList = this.getBonusList(this.jukerData);
+						this.bonusIndexs = this.bonusList.slice().fll(0);
+					}
+					console.log('juker_list then', res);
+				})
+				.catch(res => {
+					console.log('juker_list catch', res);
+				});
+		},
+		getBonusList(data) {
+			const result = [];
+			data.forEach((item, index) => {
+				const add_time = item.add_time;
+				result[index] = this.getBonusItem(add_time);
+			});
+			return result;
+		},
+		getBonusItem(time) {
+			const splitTime = time.split('-');
+			const year = parseInt(splitTime[0]);
+			const month = parseInt(splitTime[1]);
+			// const month = 6;
+			const date = parseInt(splitTime[2]);
+			// const date = 18;
+			const result = [];
+			for (let i = 0; i < 12; i++) {
+				const temp = {
+					start_time: '',
+					end_time: '',
+					pick_time: ''
+				};
+
+				if (month < 4 || (month === 4 && date <= 15)) {
+					let tempMonth = 5 + i;
+					let tempMonth2 = 5 + i + 1;
+					let tempYear = year;
+					let tempYear2 = year;
+					if (tempMonth > 12) {
+						tempMonth = tempMonth - 12;
+						tempYear = tempYear + 1;
+					}
+					if (tempMonth2 > 12) {
+						tempMonth2 = tempMonth2 - 12;
+						tempYear2 = tempYear2 + 1;
+					}
+					temp.start_time = `${tempYear}-${tempMonth}-${16}`;
+					temp.end_time = `${tempYear2}-${tempMonth2}-${15}`;
+					temp.pick_time = `${temp.start_time} - ${temp.end_time}`;
+				} else {
+					let tempMonth = month + i + 2;
+					let tempMonth2 = month + i + 3;
+					let tempYear = year;
+					let tempYear2 = year;
+					if (tempMonth > 12) {
+						tempMonth = tempMonth - 12;
+						tempYear = tempYear + 1;
+					}
+					if (tempMonth2 > 12) {
+						tempMonth2 = tempMonth2 - 12;
+						tempYear2 = tempYear2 + 1;
+					}
+					temp.start_time = `${tempYear}-${tempMonth}-${16}`;
+					temp.end_time = `${tempYear2}-${tempMonth2}-${15}`;
+					temp.pick_time = `${temp.start_time} - ${temp.end_time}`;
+				}
+				result[result.length] = temp;
+			}
+			return result;
+		},
 		show() {
 			this.$http('get|api/User/index').then(res => {
 				this.users = res.result.users;
@@ -490,7 +662,7 @@ page {
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-		border-bottom: 4rpx solid #ededed;
+		border-bottom: 1px solid #eee;
 		padding-bottom: 20rpx;
 
 		.font-26 {
@@ -511,15 +683,28 @@ page {
 			background-size: 100%;
 		}
 	}
-
+	.juker {
+		.msg-item {
+			padding-bottom: 20rpx;
+			margin-bottom: 50rpx;
+		}
+		.msg-item:last-child {
+			margin-bottom: 0;
+		}
+	}
 	.wallt-msg {
-		margin-top: 28rpx;
+		margin-top: 50rpx;
 
 		.msg-item {
 			display: flex;
-			height: 100rpx;
+			// height: 100rpx;
 			text-align: center;
-
+			// margin-bottom: 50rpx;
+			position: relative;
+			.msg-item-tips {
+				position: absolute;
+				top: -40rpx;
+			}
 			> view {
 				flex: 1;
 			}
@@ -536,6 +721,16 @@ page {
 			.right {
 				padding-left: 30rpx;
 				box-sizing: border-box;
+			}
+			&:not(:last-child)::after {
+				content: '';
+				position: absolute;
+				left: 0;
+				bottom: 0;
+				width: 100%;
+				background-color: #eee;
+				transform: scaleY(0.5);
+				height: 1px;
 			}
 		}
 	}
@@ -583,7 +778,7 @@ page {
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-		border-bottom: 4rpx solid #ededed;
+		border-bottom: 1px solid #eee;
 		padding-bottom: 20rpx;
 
 		.font-26 {
@@ -642,7 +837,7 @@ page {
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-		border-bottom: 4rpx solid #ededed;
+		border-bottom: 1px solid #eee;
 		line-height: 90rpx;
 	}
 

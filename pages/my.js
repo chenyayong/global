@@ -30,9 +30,14 @@ export default {
 		//我的积分
 	},
 	to_gift() {
-			uni.navigateTo({
-				url: "/my/gift/gift"
-			});
+		uni.navigateTo({
+			url: "/my/gift/gift"
+		});
+	},
+	to_experience() {
+		uni.navigateTo({
+			url: "/my/experience/experience"
+		});
 	},
 	to_team() {
 		uni.navigateTo({
@@ -40,7 +45,7 @@ export default {
 		});
 		//我的团队
 	},
-	to_operate(){
+	to_operate() {
 		uni.navigateTo({
 			url: "/my/operate"
 		});
@@ -70,8 +75,8 @@ export default {
 				uni.navigateTo({
 					url: "/my/shiming/shiming"
 				});
-			}else{
-				 this.$toastApp('您已实名认证成功');
+			} else {
+				this.$toastApp('您已实名认证成功');
 			}
 		})
 		// this.$http('get|api/user/apply_partner').then(res=>{

@@ -265,6 +265,12 @@
 					}
 				},
 				{
+					"path": "experience/experience",
+					"style": {
+						"navigationBarTitleText": "联创积分"
+					}
+				},
+				{
 					"path": "my_team/my_team",
 					"style": {
 						"navigationBarTitleText": "我的团队"

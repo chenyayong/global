@@ -3,7 +3,8 @@
 		<view class="header">
 			
 			<view class="yue">
-				<view class="font-26">股数</view>
+				<!-- <view class="font-26">股数</view> -->
+				<view class="font-26">荟萃国际</view>
 				<view class="font-72 bold">{{stock_sum}}</view>
 			</view>
 			<view class="yue">

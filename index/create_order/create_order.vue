@@ -124,11 +124,11 @@
 				<text class="mark-text">优惠券</text>
 				<text class="picker-value">{{coupon_text}}</text>
 			</view>
-			<view class="page-mark flex-row bdb-1px">
+			<!-- <view class="page-mark flex-row bdb-1px">
 				<text class="mark-text">余额：</text>
 				<input type="number" v-model="pay_points" @blur="getPayPoint" class="mark-input" :placeholder="'可用余额：'+user_money"
 					placeholder-style="color:#999999">
-			</view>
+			</view> -->
 			<view class="page-mark flex-row">
 				<text class="mark-text">备注信息：</text>
 				<input type="text" v-model="user_note" class="mark-input" style="flex: 2;" placeholder="请填写备注信息"
@@ -147,10 +147,11 @@
 					<text>优惠券</text>
 					<text class="red-text">-¥{{(+order_data.couponFee).toFixed(2)}}</text>
 				</view>
-				<!-- <view class="info-li flex-row">
+				<view class="info-li flex-row">
 					<text>积分抵扣</text>
-					<text class="red-text">-¥{{(+order_data.pointsFee).toFixed(2)}}</text>
-				</view> -->
+					<text class="red-text">-¥{{(+order_data.order_integral_money).toFixed(2)}}</text>
+					<!-- <text class="red-text">-¥{{(+order_data.pointsFee).toFixed(2)}}</text> -->
+				</view>
 				<!-- <view class="info-li flex-row">
 					<text>余额</text>
 					<text class="red-text">-¥{{(+order_data.balance).toFixed(2)}}</text>

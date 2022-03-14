@@ -49,13 +49,13 @@
 					<view class="num"></view>
 				</view>
 			</view>
-			<view class="pay-item" @tap="to_replace_pay" v-if="!isFirend">
+			<!-- <view class="pay-item" @tap="to_replace_pay" v-if="!isFirend">
 				<image src="/static/replace_icon.png" class="image-44" mode="" />
 				<view class="value">
 					<view>找人代付</view>
 					<view class="num"></view>
 				</view>
-			</view>
+			</view> -->
 		</view>
 	</view>
 </template>
