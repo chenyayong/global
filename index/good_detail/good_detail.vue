@@ -85,7 +85,7 @@
 				<view class="is-old-price inline">原价: {{goods.market_price}}元</view>
 			</view>
 			<view>{{goods.is_free_shipping===1?'快递包邮':'不包邮'}}</view>
-			<view>已售{{goods.sales_sum}}件</view>
+			<!-- <view>已售{{goods.sales_sum}}件</view> -->
 		</view>
 		<view class="solid"></view>
 		<!-- <view class="have-more" @tap="service=true">
