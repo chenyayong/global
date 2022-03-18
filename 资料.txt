@@ -14,6 +14,7 @@ global3plus@qq.com
 
 // 管理后台
 https://app.global3plus.com/admin
+test yanfa9527.
 
 国际支付
 PAYPAL: anson.ko.89@gmail.com
