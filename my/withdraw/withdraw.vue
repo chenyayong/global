@@ -45,7 +45,10 @@
 						<view class="uni-list-cell-tips" v-if="index === current && (index === 0 || index === 1)">
 							<view>荟萃国际 现价：{{ stockPrice }}</view>
 							<view v-if="tipsStatus">提现只限100的倍数</view>
-							<view v-else>本次提现{{money}}元 获得{{count}}股</view>
+							<view v-else>
+								<view v-if="index === 0">本次提现{{money}}元 获得{{count}}股 额外赠送{{count2}}股</view>
+								<view v-if="index === 1">本次提现{{money}}元 获得{{count}}股</view>
+							</view>
 
 						</view>
 					</label>
@@ -447,6 +450,10 @@
 					money = money / 2;
 					count = Math.floor(money / this.stockPrice);
 				}
+				return count;
+			},
+			count2() {
+				let count = Math.floor(this.count * 5 / 100);
 				return count;
 			},
 			tipsStatus() {
