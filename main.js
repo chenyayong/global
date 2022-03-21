@@ -6,9 +6,7 @@ import goodList from './index/components/good_list.vue'
 import noData from './components/no_data.vue'
 import checkBox from './components/check_box.vue'
 import globe from 'globe'
-import {
-  store
-} from './stroe'
+import { store } from './stroe'
 // #ifdef H5
 import jweixin from 'jweixin-module'
 // #endif
@@ -30,7 +28,7 @@ window.$wx = jweixin
 App.mpType = 'app'
 
 const app = new Vue({
-  ...store,
-  ...App
+    ...store,
+    ...App
 })
 app.$mount()
