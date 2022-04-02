@@ -7,7 +7,7 @@
             </view>
             <view class="from-item">
                 <view class="font-30">身份证</view>
-                <input type="text" v-model="from.idcard" class="font-30" placeholder="请输入身份证号码" placeholder-class="D7" />
+                <input type="idcard" v-model="from.idcard" class="font-30" placeholder="请输入身份证号码" placeholder-class="D7" />
             </view>
             <view class="from-item">
                 <view class="font-30">银行账号</view>
@@ -26,7 +26,7 @@
             </view>
             <view class="from-item">
                 <view class="font-30">手机号</view>
-                <input type="text" v-model="from.mobile" class="font-30" placeholder="银行预留手机号码" placeholder-class="D7" />
+                <input type="number" v-model="from.mobile" class="font-30" placeholder="银行预留手机号码" placeholder-class="D7" />
             </view>
         </view>
         <view class="buttom font-30" @tap="input_password">确定</view>
