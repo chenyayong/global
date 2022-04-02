@@ -25,7 +25,7 @@
                         <!--</view>-->
                     </view>
                 </view>
-               <!-- <image class="sign" v-if="users.is_sign === 0" @tap="to_sign" src="/static/my_sign.png" mode="" />
+                <!-- <image class="sign" v-if="users.is_sign === 0" @tap="to_sign" src="/static/my_sign.png" mode="" />
                 <image class="sign" v-else src="/static/my_sign_active.png" mode="" /> -->
             </view>
             <view class="user-msg">
@@ -153,13 +153,7 @@
                                 <view>{{ item.start_time }} -</view>
                                 <view>{{ item.end_time }}</view>
                             </view>
-                            <!-- <view class="uni-input">{{ array[index] }}</view> -->
                         </picker>
-
-                        <!-- <view class="font-24" style="text-align: left;">
-                            <view>2022/12/12 -</view>
-                            <view>2022/12/12</view>
-                        </view> -->
                     </view>
                     <view class="wallet-small">
                         <image src="/static/juker-date.png"></image>
@@ -168,8 +162,9 @@
                     </view>
                     <view class="wallet-small">
                         <image src="/static/juker-money.png"></image>
-                        <view class="font-24">累计分红金额</view>
-                        <view class="font-24">0</view>
+                        <view class="font-24">分红总额</view>
+                        <view class="font-24">¥0</view>
+                        <!-- <view class="font-24">(分红总额高于¥{{ item.give_sum }})</view> -->
                     </view>
                 </view>
             </view>
@@ -359,6 +354,7 @@ export default {
             this.$http('get|api/user/juker_list')
                 .then(res => {
                     this.jukerData = res.result
+                    // this.jukerData = [{give_sum: 50000}]
                     if (this.jukerData && this.jukerData.length) {
                         this.bonusList = this.getBonusList(this.jukerData)
                         this.bonusIndexs = this.bonusList.slice().fll(0)

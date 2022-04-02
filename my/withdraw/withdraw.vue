@@ -33,7 +33,7 @@
                             <view>{{ item.name }}</view>
                         </view>
                         <view class="uni-list-cell-tips" v-if="index === current && (index === 0 || index === 1)">
-                            <view>荟萃国际 现价：{{ stockPrice }} 汇率：{{exchangeRate}}</view>
+                            <view>荟萃国际 现价：{{ stockPrice }} 汇率：{{ exchangeRate }}</view>
                             <view v-if="tipsStatus">提现只限100的倍数</view>
                             <view v-else>
                                 <view v-if="index === 0">本次提现{{ money }}元 获得{{ count }}股 额外赠送{{ count2 }}股</view>
@@ -217,15 +217,15 @@ export default {
                 // withdraw_type  1是银行卡，2是微信，3是支付宝
                 res.result.withdraw_type.forEach(el => {
                     switch (el) {
-                    case '1':
-                        this.option[2].open = true
-                        break
-                    case '2':
-                        this.option[0].open = true
-                        break
-                    case '3':
-                        this.option[1].open = true
-                        break
+                        case '1':
+                            this.option[2].open = true
+                            break
+                        case '2':
+                            this.option[0].open = true
+                            break
+                        case '3':
+                            this.option[1].open = true
+                            break
                     }
                 })
                 if (res.result.withdraw_type.length !== 3) {
@@ -276,21 +276,29 @@ export default {
                 this.$toastApp('金额格式不正确', 'none')
                 return
             }
-            switch (this.option_active) {
-            case 0:
-                // this.pay_dialog = true
-                this.$refs.payPassword.showPay()
-                break
-            case 1:
-            case 2:
-                if (this.option[this.option_active].from.bank_id === '') {
-                    this.$toastApp('请先选择收款账户', 'none')
-                    return
+            let title = `您选择的提现方式 ${this.items[this.current].name}`
+            uni.showModal({
+                title: title,
+                success: res => {
+                    if (res.confirm) {
+                        switch (this.option_active) {
+                            case 0:
+                                // this.pay_dialog = true
+                                this.$refs.payPassword.showPay()
+                                break
+                            case 1:
+                            case 2:
+                                if (this.option[this.option_active].from.bank_id === '') {
+                                    this.$toastApp('请先选择收款账户', 'none')
+                                    return
+                                }
+                                // this.pay_dialog = true
+                                this.$refs.payPassword.showPay()
+                                break
+                        }
+                    }
                 }
-                // this.pay_dialog = true
-                this.$refs.payPassword.showPay()
-                break
-            }
+            })
         },
         // save(e) {
         //     switch (this.option_active) {
@@ -333,33 +341,33 @@ export default {
                     mask: true
                 })
                 switch (this.option_active) {
-                case 0:
-                    this.option[0].from.paypwd = this.payPwd
-                    this.option[0].from.money_type = this.current + 1
-                    this.$http('post|api/User/withdrawals', this.option[0].from)
-                        .then(res => {
-                            this.$toastApp(res.msg)
-                            uni.navigateBack()
-                        })
-                        .catch(e => {
-                            this.$toastApp(e.msg, 'none')
-                            this.$refs.pay.passworld = []
-                        })
-                    break
-                case 1:
-                case 2:
-                    this.option[this.option_active].from.paypwd = this.payPwd
-                    this.option[this.option_active].from.money_type = this.current + 1
-                    this.$http('post|api/User/withdrawals', this.option[this.option_active].from)
-                        .then(res => {
-                            this.$toastApp(res.msg)
-                            uni.navigateBack()
-                        })
-                        .catch(e => {
-                            this.$toastApp(e.msg, 'none')
-                            this.$refs.pay.passworld = []
-                        })
-                    break
+                    case 0:
+                        this.option[0].from.paypwd = this.payPwd
+                        this.option[0].from.money_type = this.current + 1
+                        this.$http('post|api/User/withdrawals', this.option[0].from)
+                            .then(res => {
+                                this.$toastApp(res.msg)
+                                uni.navigateBack()
+                            })
+                            .catch(e => {
+                                this.$toastApp(e.msg, 'none')
+                                this.$refs.pay.passworld = []
+                            })
+                        break
+                    case 1:
+                    case 2:
+                        this.option[this.option_active].from.paypwd = this.payPwd
+                        this.option[this.option_active].from.money_type = this.current + 1
+                        this.$http('post|api/User/withdrawals', this.option[this.option_active].from)
+                            .then(res => {
+                                this.$toastApp(res.msg)
+                                uni.navigateBack()
+                            })
+                            .catch(e => {
+                                this.$toastApp(e.msg, 'none')
+                                this.$refs.pay.passworld = []
+                            })
+                        break
                 }
             }
             // console.log('this.from', this.option[this.option_active].from)
@@ -383,6 +391,7 @@ export default {
                 this.$http('get|api/User/withdrawals', {
                     bank_type: this.option[this.option_active].list
                 }).then(res => {
+                    console.log('get|api/User/withdrawals', res)
                     this.card_list = res.result.bankcard_list
                         ? res.result.bankcard_list.map(row => {
                             row.active = false
@@ -390,6 +399,8 @@ export default {
                         })
                         : []
                     this.card_dialog = true
+                }).catch(err => {
+                    console.log('get|api/User/withdrawals err', err)
                 })
             }
         },
@@ -440,10 +451,10 @@ export default {
             const option = this.option
             const option_active = this.option_active
             let money = option[option_active].from.money
-            let count = Math.floor(money * this.exchangeRate / this.stockPrice)
+            let count = Math.floor((money * this.exchangeRate) / this.stockPrice)
             if (this.current === 1) {
                 money = money / 2
-                count = Math.floor(money * this.exchangeRate / this.stockPrice)
+                count = Math.floor((money * this.exchangeRate) / this.stockPrice)
             }
             return count
         },

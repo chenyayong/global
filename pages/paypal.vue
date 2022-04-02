@@ -1,23 +1,19 @@
 <template>
-	<view>
-		<web-view :src="url"></web-view>
-	</view> 
+    <view><web-view :src="url"></web-view></view>
 </template>
 
 <script>
-	export default {
-		data() {
-			return {
-				url:''
-			};
-		},
-		onLoad(opt) {
-			console.log('PayPal onLoad', this.url);
-			this.url = this.$image + '/mobile/index/pay_button?order_id=' + opt.order_id
-		}
-	}
+export default {
+    data() {
+        return {
+            url: ''
+        }
+    },
+    onLoad(opt) {
+        this.url = this.$image + '/mobile/index/pay_button?order_id=' + opt.order_id
+        // console.log('PayPal onLoad', this.url)
+    }
+}
 </script>
 
-<style lang="scss">
-	
-</style>
+<style lang="scss"></style>
