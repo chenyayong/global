@@ -22,3 +22,8 @@ PW: Newvision2022
 
 国际版 
 https://www.alascine.com/h5-new/#/
+
+测试版
+https://test.global3plus.com/index.php/Admin/Index/index
+账号： test    密码 ：yanfa2021
+公众号：global3+

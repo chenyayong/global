@@ -49,6 +49,7 @@ export default {
                         // if (res.data.status === -1) {
                         //   this.$toastApp(res.data.msg)
                         // }
+                        // console.log('request', url, res)
                         if (res.data.status === 1) {
                             resolve(res.data)
                             uni.hideLoading()

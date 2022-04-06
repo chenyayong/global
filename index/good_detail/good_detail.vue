@@ -244,6 +244,7 @@ export default {
                 el.item_value[0].active = true
             })
             this.type = res.result.filter_spec
+            console.log('type', res.result)
             this.goods_attr_list = res.result.goods_attr_list
             this.goods_images_list = res.result.goods_images_list
             this.spec_goods_price = res.result.spec_goods_price
