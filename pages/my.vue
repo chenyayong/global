@@ -452,7 +452,6 @@ export default {
             this.$http('get|api/User/index').then((res) => {
                 this.users = res.result.users
                 this.operator = res.result.operator
-                // console.log('----------------------------', res)
                 uni.setStorageSync('level', res.result.users.level)
                 this.user_message_count = res.result.user_message_count
                 if (/http/.test(this.users.head_pic)) {
