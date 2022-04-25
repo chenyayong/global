@@ -94,7 +94,16 @@
 			}
 
 		}
-	],
+	    ,{
+            "path" : "components/displace_popup/displace_popup",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+    ],
 	"subPackages": [{
 			"root": "index",
 			"pages": [{

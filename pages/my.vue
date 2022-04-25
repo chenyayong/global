@@ -11,14 +11,8 @@
                     <image :src="users.head_pic || '/static/user.svg'" mode="" @tap="go_login" />
                     <view class="font-26">
                         <view>
-                            <view
-                                v-if="users.nickname || users.mobile"
-                                class="inline ellipsis"
-                                style="max-width: 250rpx"
-                                @tap="go_login"
-                                >{{ users.nickname || users.mobile }}</view
-                            >
-                            <view v-else class="inline ellipsis" style="max-width: 250rpx" @tap="go_login">未登录</view>
+                            <view v-if="users.nickname || users.mobile" class="inline ellipsis" style="max-width:250rpx" @tap="go_login">{{ users.nickname || users.mobile }}</view>
+                            <view v-else class="inline ellipsis" style="max-width:250rpx" @tap="go_login">未登录</view>
                             <!-- #ifdef APP-PLUS -->
                             <view v-if="users.level_name" class="vip font-22 inline">{{ users.level_name }}</view>
                             <!-- #endif -->
@@ -137,7 +131,7 @@
         <!-- #endif -->
 
         <!-- #ifdef APP -->
-        <view class="wallet" style="margin-top: 20rpx" v-if="jukerData && jukerData.length">
+        <view class="wallet" style="margin-top: 20rpx;" v-if="jukerData && jukerData.length">
             <view class="my-wallet">
                 <view class="font-30">JUKER祝播客</view>
                 <!-- <view class="font-26"></view> -->
@@ -151,17 +145,11 @@
                         <view class="font-24">{{ item.give_sum }}</view>
                     </view>
                     <view class="wallet-small">
-                        <picker
-                            :disabled="item.status === 2"
-                            :value="bonusIndexs[index]"
-                            @change="bindTimerChange($event, index)"
-                            range-key="pick_time"
-                            :range="bonusList[index]"
-                        >
+                        <picker :disabled="item.status === 2" :value="bonusIndexs[index]" @change="bindTimerChange($event, index)" range-key="pick_time" :range="bonusList[index]">
                             <image src="/static/juker-timer.png"></image>
                             <view class="font-24">分红时间</view>
                             <view class="font-24" v-if="item.status === 1">设置开始时间</view>
-                            <view class="font-24" v-if="item.status === 2" style="text-align: left">
+                            <view class="font-24" v-if="item.status === 2" style="text-align: left;">
                                 <view>{{ item.start_time }} -</view>
                                 <view>{{ item.end_time }}</view>
                             </view>
@@ -176,14 +164,14 @@
                         <image src="/static/juker-money.png"></image>
                         <view class="font-24">分红总额</view>
                         <view class="font-24">¥0</view>
-                        <!-- <view class="font-24">(分红总额高于¥{{ item.give_sum }})</view> -->
+                        <view class="font-24" style="font-size: 20rpx;">(分红总额高于¥{{ item.goods_price }})</view>
                     </view>
                 </view>
             </view>
         </view>
         <!-- #endif -->
 
-        <view class="wallet" style="margin-top: 20rpx" v-if="operator">
+        <view class="wallet" style="margin-top: 20rpx;" v-if="operator">
             <view class="my-wallet" @tap="to_operate">
                 <view class="font-30">所属运营中心</view>
                 <view class="font-26"></view>
@@ -262,19 +250,10 @@
         </view>
         <server-img v-model="server_img"></server-img>
         <bind-account v-model="show_bind" :set_mobel="set_mobel"></bind-account>
-        <no-permission
-            :title="title"
-            :message="message"
-            :botton="botton"
-            v-model="permission_dialog"
-            @change="permission_change"
-        ></no-permission>
-        <no-conditions
-            v-model="conditions.dialog"
-            :conditions="conditions"
-            @change="conditions_change"
-            :ok="is_ok"
-        ></no-conditions>
+        <no-permission :title="title" :message="message" :botton="botton" v-model="permission_dialog" @change="permission_change"></no-permission>
+        <no-conditions v-model="conditions.dialog" :conditions="conditions" @change="conditions_change" :ok="is_ok"></no-conditions>
+        <!-- 置换方案 -->
+        <displacePopup :pageShowStatus="pageShowStatus" />
     </view>
 </template>
 
@@ -283,9 +262,11 @@ import my from './my'
 import bindAccount from 'index/components/bind_account.vue'
 import noPermission from 'components/no_permission.vue'
 import noConditions from 'components/no_conditions.vue'
+import displacePopup from '@/components/displace_popup/displace_popup.vue'
 export default {
     data() {
         return {
+            pageShowStatus: false,
             jukerData: [],
             bonusIndexs: [],
             bonusList: [],
@@ -313,11 +294,11 @@ export default {
     },
     async onLoad() {
         await this.$http('get|api/MobileBase/checkLogin')
-            .then((res) => {
+            .then(res => {
                 // 没登陆
             })
-            .catch((e) => {
-                this.$http('get|api/User/checkUserinfo').then((res) => {
+            .catch(e => {
+                this.$http('get|api/User/checkUserinfo').then(res => {
                     this.$nextTick(() => {
                         this.show_bind = true
                         this.set_mobel = true
@@ -328,6 +309,14 @@ export default {
     onShow() {
         this.juker_list()
         this.show()
+        // #ifdef APP-PLUS
+        this.pageShowStatus = true
+        // #endif
+    },
+    onHide() {
+        // #ifdef APP-PLUS
+        this.pageShowStatus = false
+        // #endif
     },
     onPullDownRefresh() {
         this.show()
@@ -340,13 +329,24 @@ export default {
         }, 1000)
     },
     methods: {
+        giveSumTips(value) {
+            // 100000 50000 || 100000  10000 || 50000
+            console.log('giveSumTips', value)
+            if (value >= 100000) {
+                return 100000
+            } else if (value >= 50000 && value < 100000) {
+                return 50000
+            } else if (value >= 10000 && value < 50000) {
+                return 10000
+            }
+        },
         bindTimerChange(item, index) {
             this.bonusIndexs[index] = item.detail.value
             // console.log('bindTimerChange', this.bonusIndexs)
             uni.showModal({
                 title: '提示',
                 content: '请注意确认后不能再提交了',
-                success: (res) => {
+                success: res => {
                     if (res.confirm) {
                         const data = this.jukerData[index]
                         const data2 = this.bonusList[index][this.bonusIndexs[index]]
@@ -365,26 +365,26 @@ export default {
                 start_time: data2.start_time,
                 end_time: data2.end_time
             })
-                .then((res) => {
+                .then(res => {
                     // console.log('check_time', res)
                     this.juker_list()
                 })
-                .catch((res) => {
+                .catch(res => {
                     // console.log('check_time catch', res)
                 })
         },
         juker_list() {
             this.$http('get|api/user/juker_list')
-                .then((res) => {
+                .then(res => {
                     this.jukerData = res.result
-                    // this.jukerData = [{give_sum: 50000}]
+                    // this.jukerData = [{give_sum: 120000}, {give_sum: 90000}, {give_sum: 12000}]
                     if (this.jukerData && this.jukerData.length) {
                         this.bonusList = this.getBonusList(this.jukerData)
                         this.bonusIndexs = this.bonusList.slice().fll(0)
                     }
                     // console.log('juker_list then', res)
                 })
-                .catch((res) => {
+                .catch(res => {
                     // console.log('juker_list catch', res)
                 })
         },
@@ -449,9 +449,10 @@ export default {
             return result
         },
         show() {
-            this.$http('get|api/User/index').then((res) => {
+            this.$http('get|api/User/index').then(res => {
                 this.users = res.result.users
                 this.operator = res.result.operator
+                // console.log('----------------------------', res)
                 uni.setStorageSync('level', res.result.users.level)
                 this.user_message_count = res.result.user_message_count
                 if (/http/.test(this.users.head_pic)) {
@@ -464,11 +465,11 @@ export default {
                 uni.setStorageSync('level', res.result.users.level)
             })
             this.remScroll()
-            this.$http('get|api/User/contribution_points').then((res) => {
+            this.$http('get|api/User/contribution_points').then(res => {
                 // console.log('贡献值',res);
             })
             this.$http('get|api/user/check_partner')
-                .then((res) => {
+                .then(res => {
                     // console.log(res)
                     this.conditions = {
                         title: '你已经达到条件',
@@ -478,7 +479,7 @@ export default {
                     }
                     this.is_ok = true
                 })
-                .catch((e) => {
+                .catch(e => {
                     // console.log(e)
                 })
         },
@@ -489,7 +490,7 @@ export default {
             str = `${data.getFullYear()}-${data.getMonth() + 1}-${data.getDate()}`
             this.$http('post|api/User/sign', {
                 str
-            }).then((res) => {
+            }).then(res => {
                 this.$toastApp(res.msg)
                 setTimeout(() => {
                     this.users.is_sign = 1
@@ -512,8 +513,8 @@ export default {
         },
         conditions_change() {
             this.$http('get|api/User/apply_level')
-                .then((res) => {
-                    this.$http('get|api/User/index').then((res) => {
+                .then(res => {
+                    this.$http('get|api/User/index').then(res => {
                         this.users = res.result.users
                     })
                     this.$toastApp(res.msg)
@@ -524,7 +525,7 @@ export default {
                         dialog: false
                     }
                 })
-                .catch((e) => {
+                .catch(e => {
                     this.$toastApp(e.msg)
                     // console.log(e);
                 })
@@ -542,7 +543,8 @@ export default {
     components: {
         bindAccount,
         noPermission,
-        noConditions
+        noConditions,
+        displacePopup
     }
 }
 </script>
