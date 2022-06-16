@@ -5,7 +5,7 @@ Vue.use(Vuex)
 export const store = new Vuex.Store({
     state: {
         address_id: '',
-        displaceDistance: 1 * 60 * 1000,
+        displaceDistance: 60 * 1000,
         displaceStatus: 0,
         user: {}
     },
@@ -43,7 +43,7 @@ export const store = new Vuex.Store({
             commit
         }) {
             Vue.prototype.$http('get|api/User/index').then((res) => {
-                // console.log('setDisplaceStatus', res)
+                // console.log('get|api/User/index', res)
                 if (res.status === 1) {
                     const value = res.result.isChange || 0
                     commit('set_displaceStatus', value)
