@@ -104,7 +104,7 @@ export default {
             const expire = parseInt(uni.getStorageSync('displaceExpire'))
             const distance = this.$store.state.displaceDistance
             const timestamp = Date.now()
-            // console.log(timestamp, expire, timestamp - expire, distance)
+            // console.log(timestamp, expire, distance, timestamp - expire)
             let result = false
             if (!expire) {
                 result = true
@@ -126,36 +126,45 @@ export default {
         },
         displaceConfirm(value) {
             // console.log('displaceConfirm', this.displaceStatus, this.displaceData[this.displaceCurrent].value)
-            this.$http('get|api/user/changeGoods', {
-                change_type: this.displaceData[this.displaceCurrent].value,
-                is_change: this.displaceStatus
-            })
-                .then(res => {
-                    // console.log('置换成功', res)
-                    if (res.status === 1) {
-                        uni.showToast({
-                            title: res.msg || '置换成功',
-                            icon: 'none'
+            uni.showModal({
+                title: '温馨提示',
+                content: '您确定当前的置换方案吗？',
+                success: res => {
+                    if (res.confirm) {
+                        this.$http('get|api/user/changeGoods', {
+                            change_type: this.displaceData[this.displaceCurrent].value,
+                            is_change: this.displaceStatus
                         })
-                        this.$store.commit('set_displaceStatus', 0)
-                    } else {
-                        uni.showToast({
-                            title: res.msg || '置换失败',
-                            icon: 'none'
-                        })
+                            .then(res => {
+                                // console.log('置换成功', res)
+                                if (res.status === 1) {
+                                    uni.showToast({
+                                        title: res.msg || '置换成功',
+                                        icon: 'none'
+                                    })
+                                    this.$store.commit('set_displaceStatus', 0)
+                                } else {
+                                    uni.showToast({
+                                        title: res.msg || '置换失败',
+                                        icon: 'none'
+                                    })
+                                }
+                            })
+                            .catch(res => {
+                                // console.log('置换失败', res)
+                                uni.showToast({
+                                    title: res.msg || '置换失败',
+                                    icon: 'none'
+                                })
+                            })
                     }
-                })
-                .catch(res => {
-                    // console.log('置换失败', res)
-                    uni.showToast({
-                        title: res.msg || '置换失败',
-                        icon: 'none'
-                    })
-                })
+                }
+            })
         }
     },
     watch: {
         displaceStatus(val) {
+            // console.log('watch displaceStatus', val)
             if (val !== 0) {
                 this.$refs.popup.open()
             } else {
@@ -169,11 +178,12 @@ export default {
             handler(val) {
                 if (val) {
                     const expire = this.displaceExpire()
-                    // console.log('pageShowStatus', val)
+                    // console.log('pageShowStatus', val, this.displaceCurrent)
                     if (expire) {
                         this.$store.dispatch('setDisplaceStatus')
                         // this.$store.commit('set_displaceStatus', 3)
                     }
+                    // this.$store.commit('set_displaceStatus', 3)
                 }
             }
         }
@@ -200,7 +210,7 @@ export default {
 }
 </script>
 
-<style  lang="scss">
+<style lang="scss">
 .popup {
     background-color: #ffffff;
     font-size: 28rpx;
