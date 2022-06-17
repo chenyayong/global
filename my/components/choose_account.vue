@@ -32,6 +32,11 @@ export default {
                     iamge:'/static/icon_13.png',
                     label:"支付宝",
                     url:'/my/pay_account/other_add/other_add'
+                },
+                {
+                    iamge:'/static/paypal.jpeg',
+                    label:"PayPal",
+                    url:'/my/pay_account/paypal_add/paypal_add'
                 }
             ]
         }

@@ -347,7 +347,6 @@ export default {
     onShow() {
         // #ifdef APP-PLUS
         this.pageShowStatus = true
-
         this.updateApp()
         // #endif
 

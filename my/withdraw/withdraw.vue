@@ -2,7 +2,13 @@
     <view class="content-box">
         <view class="option">
             <template v-for="(item, index) in option">
-                <view v-if="item.open" @tap="to_active(item, index)" :key="index" :class="[item.active ? 'active' : '']">{{ item.label }}</view>
+                <view
+                    v-if="item.open"
+                    @tap="to_active(item, index)"
+                    :key="index"
+                    :class="[item.active ? 'active' : '']"
+                    >{{ item.label }}</view
+                >
             </template>
         </view>
         <view class="from">
@@ -16,7 +22,13 @@
             <view class="font-30" style="margin-top: 50rpx">提现金额</view>
             <view class="account-input-box">
                 <view class="font-48">￥</view>
-                <input class="account-input inline" @blur="handleUserMoney" v-model="option[option_active].from.money" type="number" :placeholder="`请输入金额`" />
+                <input
+                    class="account-input inline"
+                    @blur="handleUserMoney"
+                    v-model="option[option_active].from.money"
+                    type="number"
+                    :placeholder="`请输入金额`"
+                />
             </view>
 
             <view class="font-26 flex">
@@ -36,7 +48,9 @@
                             <view>荟萃国际 现价：{{ stockPrice }} 汇率：{{ exchangeRate }}</view>
                             <view v-if="tipsStatus">提现只限100的倍数</view>
                             <view v-else>
-                                <view v-if="index === 0">本次提现{{ money }}元 获得{{ count }}股 额外赠送{{ count2 }}股</view>
+                                <view v-if="index === 0"
+                                    >本次提现{{ money }}元 获得{{ count }}股 额外赠送{{ count2 }}股</view
+                                >
                                 <view v-if="index === 1">本次提现{{ money }}元 获得{{ count }}股</view>
                             </view>
                         </view>
@@ -44,10 +58,37 @@
                 </radio-group>
             </view>
 
+            <view class="font-30" style="margin-top: 50rpx">提现方式</view>
+            <view class="uni-list">
+                <view class="uni-list-cell uni-list-cell-pd">
+                    <radio-group @change="usersTypeChange">
+                        <label>
+                            <view class="uni-list-cell uni-list-cell-pd">
+                                <view><radio name="users_type" :value="1" :checked="users_type === 1" /></view>
+                                <view>个人</view>
+                            </view>
+                        </label>
+                        <label>
+                            <view class="uni-list-cell uni-list-cell-pd">
+                                <view><radio name="users_type" :value="2" :checked="users_type === 2" /></view>
+                                <view>企业</view>
+                            </view>
+                        </label>
+                    </radio-group>
+                </view>
+            </view>
+
             <view class="buttom font-32" @tap="subimt">立即提现</view>
         </view>
         <view class="rich-box"><rich-text :nodes="contxt"></rich-text></view>
-        <pay-account v-model="card_dialog" @change="change_pay" @to_add="to_add" :bank_id="option[1].from.bank_id" :go="false" :list="card_list"></pay-account>
+        <pay-account
+            v-model="card_dialog"
+            @change="change_pay"
+            @to_add="to_add"
+            :bank_id="option[1].from.bank_id"
+            :go="false"
+            :list="card_list"
+        ></pay-account>
         <!-- 支付密码 -->
         <!-- <pay-password ref="pay" v-model="pay_dialog" :show="false" @check_word="save"></pay-password> -->
         <pay-password ref="payPassword" @onChange="payPwdTap"></pay-password>
@@ -124,6 +165,21 @@ export default {
                     bank_type: 1,
                     list: 1,
                     name: '请选择'
+                },
+                {
+                    label: 'PayPal',
+                    value: '',
+                    active: false,
+                    open: false,
+                    from: {
+                        bank_id: '',
+                        money: '',
+                        paypwd: '',
+                        type: 4
+                    },
+                    bank_type: 3,
+                    list: 3,
+                    name: '请选择'
                 }
             ],
             option_active: 0,
@@ -137,7 +193,9 @@ export default {
             payPwd: '',
             stockPrice: '',
             exchangeRate: null,
-            timer: null
+            timer: null,
+            users_type: 1,
+            tax_path: ''
         }
     },
     onReady() {
@@ -147,15 +205,18 @@ export default {
         clearInterval(this.timer)
     },
     async onShow() {
+        if (this.users_type === 2) {
+            this.to_identification()
+        }
         await this.getRule()
         await this.$http('get|api/User/is_paypwd')
-            .then(res => {
+            .then((res) => {
                 this.no_password = true // 没有密码
                 // console.log('is_paypwd success', res)
             })
             .catch(() => {
                 // console.log('is_paypwd error', err)
-                this.get_type().then(_ => {
+                this.get_type().then((_) => {
                     this.option[0].name = `微信${this.user.nickname}`
                 })
             })
@@ -164,7 +225,7 @@ export default {
                 title: '提示',
                 content: '您还未实名！',
                 confirmText: '去实名',
-                success: function(res) {
+                success: function (res) {
                     if (res.confirm) {
                         uni.navigateTo({
                             url: '/my/shiming/shiming'
@@ -177,6 +238,63 @@ export default {
         }
     },
     methods: {
+        chooseTaxPath() {
+            let that = this
+            uni.chooseImage({
+                count: 1,
+                sizeType: 'compressed',
+                success: (chooseImageRes) => {
+                    uni.showLoading({
+                        mask: true,
+                        title: '上传中'
+                    })
+                    this.$uploadCom(chooseImageRes).then((res) => {
+                        that.tax_path = res.result
+                        uni.hideLoading()
+                        that.$forceUpdate()
+                        uni.showToast({
+                            title: '上传成功'
+                        })
+                    })
+                }
+            })
+        },
+        usersTypeChange(e) {
+            this.users_type = e.detail.value
+
+            if (this.users_type === 2) {
+                this.to_identification()
+            }
+        },
+        to_identification() {
+            uni.showLoading({
+                title: '加载中...'
+            })
+            this.$http('get|api/user/apply_partner').then((res) => {
+                // console.log('get|api/user/apply_partner', res)
+                const user_embassy = res.result.user_embassy
+                if (user_embassy.status === -3) {
+                    uni.showModal({
+                        content: '您还没有企业认证，是否进行企业认证？',
+                        success: (res) => {
+                            if (res.confirm) {
+                                uni.navigateTo({
+                                    url: '/my/agent/agent'
+                                })
+                            } else if (res.cancel) {
+                                this.users_type = 1
+                            }
+                        }
+                    })
+                } else if (user_embassy.status !== 1) {
+                    this.$toastApp(user_embassy.msg)
+                    this.users_type = 1
+                } else if (res.status !== 1) {
+                    this.$toastApp(res.msg)
+                }
+                uni.hideLoading()
+            })
+        },
         radioChange(e) {
             this.current = e.detail.value
         },
@@ -184,7 +302,7 @@ export default {
             this.timer = setInterval(() => {
                 this.$http('get|api/User/withdrawals', {
                     bank_type: this.option[this.option_active].bank_type
-                }).then(res => {
+                }).then((res) => {
                     this.stockPrice = res.result.stockPrice
                     this.exchangeRate = res.result.exchangeRate
                     // console.log('getStockPrice', res)
@@ -204,7 +322,7 @@ export default {
         getRule() {
             this.$http('post|api/Article/regulation', {
                 id: 9
-            }).then(res => {
+            }).then((res) => {
                 this.contxt = res.result.topic_content
             })
         },
@@ -212,10 +330,10 @@ export default {
             // console.log('bank_type---', this.option_active, this.option[this.option_active].bank_type)
             return this.$http('get|api/User/withdrawals', {
                 bank_type: this.option[this.option_active].bank_type
-            }).then(res => {
-                // console.log('get_type', res)
-                // withdraw_type  1是银行卡，2是微信，3是支付宝
-                res.result.withdraw_type.forEach(el => {
+            }).then((res) => {
+                console.log('get_type', res)
+                // withdraw_type  1是银行卡，2是微信，3是支付宝,4是PayPal
+                res.result.withdraw_type.forEach((el) => {
                     switch (el) {
                         case '1':
                             this.option[2].open = true
@@ -226,12 +344,15 @@ export default {
                         case '3':
                             this.option[1].open = true
                             break
+                        case '4':
+                            this.option[3].open = true
+                            break
                     }
                 })
                 if (res.result.withdraw_type.length !== 3) {
                     let withdraw_type = res.result.withdraw_type
                     // let type = +withdraw_type[0]
-                    this.option.forEach(el => {
+                    this.option.forEach((el) => {
                         el.active = false
                     })
                     // let find = this.option.findIndex(ro => ro.bank_type == type)
@@ -243,22 +364,22 @@ export default {
                 this.charge = +res.result.charge
                 this.distribut_min = +res.result.distribut_min
                 this.card_list = res.result.bankcard_list
-                    ? res.result.bankcard_list.map(row => {
-                        row.active = false
-                        return row
-                    })
+                    ? res.result.bankcard_list.map((row) => {
+                          row.active = false
+                          return row
+                      })
                     : []
             })
         },
         info_option(arr) {
             // 2,3,1
-            let find_2 = arr.find(ro => ro === 2)
+            let find_2 = arr.find((ro) => ro === 2)
             if (find_2) {
                 this.option[0].active = true
                 this.option_active = 0
                 return
             }
-            let find_3 = arr.find(ro => ro === 3)
+            let find_3 = arr.find((ro) => ro === 3)
             if (find_3) {
                 this.option[1].active = true
                 this.option_active = 1
@@ -279,7 +400,7 @@ export default {
             let title = `您选择的提现方式 ${this.items[this.current].name}`
             uni.showModal({
                 title: title,
-                success: res => {
+                success: (res) => {
                     if (res.confirm) {
                         switch (this.option_active) {
                             case 0:
@@ -288,6 +409,7 @@ export default {
                                 break
                             case 1:
                             case 2:
+                            case 3:
                                 if (this.option[this.option_active].from.bank_id === '') {
                                     this.$toastApp('请先选择收款账户', 'none')
                                     return
@@ -344,26 +466,37 @@ export default {
                     case 0:
                         this.option[0].from.paypwd = this.payPwd
                         this.option[0].from.money_type = this.current + 1
+                        this.option[0].from.users_type = this.users_type
+                        if (this.option[0].from.money_type !== 1 && this.users_type === 2) {
+                            this.option[0].from.tax_path = this.tax_path
+                        }
+                        console.log('this.option[0].from', this.option[0].from)
                         this.$http('post|api/User/withdrawals', this.option[0].from)
-                            .then(res => {
+                            .then((res) => {
                                 this.$toastApp(res.msg)
                                 uni.navigateBack()
                             })
-                            .catch(e => {
+                            .catch((e) => {
                                 this.$toastApp(e.msg, 'none')
                                 this.$refs.pay.passworld = []
                             })
                         break
                     case 1:
                     case 2:
+                    case 3:
                         this.option[this.option_active].from.paypwd = this.payPwd
                         this.option[this.option_active].from.money_type = this.current + 1
+                        this.option[this.option_active].from.users_type = this.users_type
+                        if (this.option[this.option_active].from.money_type !== 1 && this.users_type === 2) {
+                            this.option[this.option_active].from.tax_path = this.tax_path
+                        }
+                        console.log('this.option[this.option_active]', this.option[this.option_active].from)
                         this.$http('post|api/User/withdrawals', this.option[this.option_active].from)
-                            .then(res => {
+                            .then((res) => {
                                 this.$toastApp(res.msg)
                                 uni.navigateBack()
                             })
-                            .catch(e => {
+                            .catch((e) => {
                                 this.$toastApp(e.msg, 'none')
                                 this.$refs.pay.passworld = []
                             })
@@ -380,7 +513,7 @@ export default {
             // 选择收款账号
         },
         to_active(item, index) {
-            this.option.forEach(el => {
+            this.option.forEach((el) => {
                 el.active = false
             })
             item.active = true
@@ -390,24 +523,27 @@ export default {
             if (this.option_active !== 0) {
                 this.$http('get|api/User/withdrawals', {
                     bank_type: this.option[this.option_active].list
-                }).then(res => {
-                    console.log('get|api/User/withdrawals', res)
-                    this.card_list = res.result.bankcard_list
-                        ? res.result.bankcard_list.map(row => {
-                            row.active = false
-                            return row
-                        })
-                        : []
-                    this.card_dialog = true
-                }).catch(err => {
-                    console.log('get|api/User/withdrawals err', err)
                 })
+                    .then((res) => {
+                        console.log('get|api/User/withdrawals', res)
+                        this.card_list = res.result.bankcard_list
+                            ? res.result.bankcard_list.map((row) => {
+                                  row.active = false
+                                  return row
+                              })
+                            : []
+                        this.card_dialog = true
+                    })
+                    .catch((err) => {
+                        console.log('get|api/User/withdrawals err', err)
+                    })
             }
         },
         to_add() {
             let type = this.option[this.option_active].bank_type
+            console.log('to_add', type)
             uni.navigateTo({
-                url: `/my/pay_account/pay_account?bank_type=${type === 1 ? 1 : 2}`
+                url: `/my/pay_account/pay_account?bank_type=${type}`
             })
             this.card_dialog = false
         },
@@ -483,6 +619,12 @@ export default {
 </script>
 
 <style lang="scss">
+.zhizhao-img {
+    width: 180rpx;
+    height: 180rpx;
+    background-image: url(../../static/add_img.png);
+    background-size: 100%;
+}
 page {
     background-color: #f7f7f7;
 }

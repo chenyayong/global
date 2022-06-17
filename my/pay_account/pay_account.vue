@@ -6,9 +6,13 @@
 					<image src="/static/bank_card.png" mode="" />
 					银行卡
 				</view>
+                <view class="card-image font-28" v-else-if="item.bank_type===2">
+                	<image src="/static/zhifubao.png" mode="" />
+                	支付宝
+                </view>
 				<view class="card-image font-28" v-else>
-					<image src="/static/zhifubao.png" mode="" />
-					支付宝
+					<image src="/static/paypal.jpeg" mode="" />
+					PayPal
 				</view>
 				<view class="font-30">
 					{{item.realname}}

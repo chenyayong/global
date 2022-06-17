@@ -68,6 +68,37 @@ export default {
         })
         // 奖励
     },
+    to_identification() {
+        this.$http('get|api/user/apply_partner').then(res => {
+            const user_embassy = res.result.user_embassy
+            if (user_embassy.status === -3) {
+                uni.navigateTo({
+                    url: '/my/agent/agent'
+                })
+            } else {
+                this.$toastApp(user_embassy.msg)
+            }
+        }).catch(e => {
+            // if (e.status === -1) {
+            //     this.permission_dialog = true
+            //     this.title = e.msg
+            //     this.message = e.result.desc
+            //     this.botton = e.result.is_upgrades ? '购买礼包' : ''
+            //     this.good_id = e.result.is_upgrades.goods_id
+            //     return
+            // }
+            // if (e.status === -2) {
+            //     this.conditions = {
+            //         title: e.msg,
+            //         message: e.result.desc,
+            //         botton: '我知道了',
+            //         dialog: true
+            //     }
+            //     return
+            // }
+            this.$toastApp(e.msg)
+        })
+    },
     to_agent() {
         this.$http('get|api/User/index').then(res => {
             // 没登陆
@@ -79,31 +110,6 @@ export default {
                 this.$toastApp('您已实名认证成功')
             }
         })
-        // this.$http('get|api/user/apply_partner').then(res=>{
-        //     uni.navigateTo({
-        //         url: "/my/agent/agent"
-        //     });
-        // }).catch(e=>{
-        //     if(e.status==-1){
-        //         this.permission_dialog=true;
-        //         this.title=e.msg;
-        //         this.message=e.result.desc;
-        //         this.botton=e.result.is_upgrades?'购买礼包':''
-        //         this.good_id=e.result.is_upgrades.goods_id
-        //         return
-        //     }
-        //     if(e.status===-2){
-        //         this.conditions={
-        //             title:e.msg,
-        //             message:e.result.desc,
-        //             botton:'我知道了',
-        //             dialog:true
-        //         }
-        //         return
-        //     }
-        //     this.$toastApp(e.msg);
-        // })
-        // 代理商
     },
     to_address() {
         uni.navigateTo({

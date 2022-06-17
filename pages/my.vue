@@ -220,6 +220,10 @@
                     <image src="/static/icon_5.png" mode="" />
                     <view class="font-24">个人认证</view>
                 </view>
+                <view @tap="to_identification">
+                    <image src="/static/identification.png" mode="" />
+                    <view class="font-24">企业认证</view>
+                </view>
                 <!-- #endif -->
 
                 <!-- #ifdef H5 -->

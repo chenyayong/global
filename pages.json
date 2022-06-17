@@ -363,6 +363,12 @@
 						"navigationBarTitleText": "添加支付宝"
 					}
 				},
+                {
+                	"path": "pay_account/paypal_add/paypal_add",
+                	"style": {
+                		"navigationBarTitleText": "添加paypal"
+                	}
+                },
 				{
 					"path": "my_collection/my_collection",
 					"style": {
