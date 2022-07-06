@@ -214,8 +214,8 @@ export default {
                 this.no_password = true // 没有密码
                 // console.log('is_paypwd success', res)
             })
-            .catch(() => {
-                // console.log('is_paypwd error', err)
+            .catch((err) => {
+                console.log('is_paypwd error', err)
                 this.get_type().then((_) => {
                     this.option[0].name = `微信${this.user.nickname}`
                 })
@@ -225,7 +225,7 @@ export default {
                 title: '提示',
                 content: '您还未实名！',
                 confirmText: '去实名',
-                success: function (res) {
+                success: function(res) {
                     if (res.confirm) {
                         uni.navigateTo({
                             url: '/my/shiming/shiming'
@@ -349,7 +349,7 @@ export default {
                             break
                     }
                 })
-                if (res.result.withdraw_type.length !== 3) {
+                if (res.result.withdraw_type.length !== 0) {
                     let withdraw_type = res.result.withdraw_type
                     // let type = +withdraw_type[0]
                     this.option.forEach((el) => {
@@ -365,28 +365,46 @@ export default {
                 this.distribut_min = +res.result.distribut_min
                 this.card_list = res.result.bankcard_list
                     ? res.result.bankcard_list.map((row) => {
-                          row.active = false
-                          return row
-                      })
+                        row.active = false
+                        return row
+                    })
                     : []
             })
         },
         info_option(arr) {
-            // 2,3,1
-            let find_2 = arr.find((ro) => ro === 2)
+            // 2,3,1,4
+            console.log('info_option', arr)
+            // console.log('info_option', arr.find((ro) => ro === 2), arr.find((ro) => ro === 3), arr.find((ro) => ro === 1))
+            let find_2 = arr.find((ro) => ro == 2)
             if (find_2) {
                 this.option[0].active = true
                 this.option_active = 0
                 return
             }
-            let find_3 = arr.find((ro) => ro === 3)
+            let find_3 = arr.find((ro) => ro == 3)
             if (find_3) {
                 this.option[1].active = true
                 this.option_active = 1
-            } else {
+                return
+            }
+
+            let find_1 = arr.find((ro) => ro == 1)
+            if (find_1) {
                 this.option[2].active = true
                 this.option_active = 2
+                return
             }
+
+            let find_4 = arr.find((ro) => ro == 4)
+            if (find_4) {
+                this.option[3].active = true
+                this.option_active = 3
+            }
+
+            // else {
+            //     this.option[2].active = true
+            //     this.option_active = 2
+            // }
         },
         subimt() {
             if (this.option[this.option_active].from.money < this.distribut_min) {
@@ -528,9 +546,9 @@ export default {
                         console.log('get|api/User/withdrawals', res)
                         this.card_list = res.result.bankcard_list
                             ? res.result.bankcard_list.map((row) => {
-                                  row.active = false
-                                  return row
-                              })
+                                row.active = false
+                                return row
+                            })
                             : []
                         this.card_dialog = true
                     })
