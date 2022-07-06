@@ -3,7 +3,7 @@
         <!-- #ifdef APP-PLUS -->
         <uni-popup ref="popup" :mask-click="false">
             <view class="popup">
-                <view class="popup-title">5G手机套餐的置换方案</view>
+                <view class="popup-title">{{ displaceTitle }}</view>
                 <view class="popup-body">
                     <view>{{ displaceStatusTips }}</view>
                     <radio-group class="popup-list" @change="displaceChange">
@@ -39,64 +39,76 @@ export default {
     data() {
         return {
             displaceCurrent: 0,
-            displacePlan$16800: [
-                {
-                    value: '1',
-                    tips: ['a.置换2个(99份)¥10000祝播客套餐优惠', 'b.额外线下支付¥3200', 'c.原有共创值保留不变', '(有效期至2022年5月15日)']
-                },
-                {
-                    value: '2',
-                    tips: ['a.配送额外股票1000股', 'b.配送2个¥10000祝播客套餐的收益权36个月', 'c.原有股票和共创值保留不变']
-                },
-                {
-                    value: '3',
-                    tips: ['a.配送额外股票1000股', 'b.配送一台平板电脑和1个¥10000祝播客套餐的收益权36个月', 'c.原有股票和共创值保留不变']
-                },
-                {
-                    value: '4',
-                    tips: ['a.5G手机置换成2台新视界平板电脑', 'b.原有股票和共创值保留不变']
-                },
-                {
-                    value: '5',
-                    tips: ['a.等待5G立体拍摄手机']
-                }
-            ],
-            displacePlan$18800: [
-                {
-                    value: '1',
-                    tips: ['a.置换2个(99份)¥10000祝播客套餐优惠', 'b.额外线下支付¥1200', 'c.原有共创值保留不变', '(有效期至2022年5月15日)']
-                },
-                {
-                    value: '2',
-                    tips: ['a.配送额外股票1000股', 'b.配送2个¥10000祝播客套餐的收益权36个月', 'c.原有股票和共创值保留不变']
-                },
-                {
-                    value: '3',
-                    tips: ['a.配送额外股票1000股', 'b.配送一台平板电脑和1个¥10000祝播客套餐的收益权36个月', 'c.原有股票和共创值保留不变']
-                },
-                {
-                    value: '4',
-                    tips: ['a.5G手机置换成2台新视界平板电脑', 'b.原有股票和共创值保留不变']
-                },
-                {
-                    value: '5',
-                    tips: ['a.等待5G立体拍摄手机']
-                }
-            ],
-            displacePlan$188000: [
-                {
-                    value: '1',
-                    tips: ['a.置换2个(99份)¥100000祝播客套餐优惠', 'b.额外线下支付¥12000', 'c.原有共创值保留不变', '(有效期至2022年5月15日)']
-                },
-                {
-                    value: '2',
-                    tips: ['a.配送额外股票10000股', 'b.配送2个¥100000祝播客套餐的收益权96个', 'c.原有股票和共创值保留不变']
-                },
-                {
-                    value: '3',
-                    tips: ['a.等待5G立体拍摄手机']
-                }
-            ]
+            displacePlan: {
+                '1': [
+                    {
+                        value: '1',
+                        tips: ['a.置换2个(99份)¥10000祝播客套餐优惠', 'b.额外线下支付¥3200', 'c.原有共创值保留不变', '(有效期至2022年5月15日)']
+                    },
+                    {
+                        value: '2',
+                        tips: ['a.配送额外股票1000股', 'b.配送2个¥10000祝播客套餐的收益权36个月', 'c.原有股票和共创值保留不变']
+                    },
+                    {
+                        value: '3',
+                        tips: ['a.配送额外股票1000股', 'b.配送一台平板电脑和1个¥10000祝播客套餐的收益权36个月', 'c.原有股票和共创值保留不变']
+                    },
+                    {
+                        value: '4',
+                        tips: ['a.5G手机置换成2台新视界平板电脑', 'b.原有股票和共创值保留不变']
+                    },
+                    {
+                        value: '5',
+                        tips: ['a.等待5G立体拍摄手机']
+                    }
+                ],
+                '2': [
+                    {
+                        value: '1',
+                        tips: ['a.置换2个(99份)¥10000祝播客套餐优惠', 'b.额外线下支付¥1200', 'c.原有共创值保留不变', '(有效期至2022年5月15日)']
+                    },
+                    {
+                        value: '2',
+                        tips: ['a.配送额外股票1000股', 'b.配送2个¥10000祝播客套餐的收益权36个月', 'c.原有股票和共创值保留不变']
+                    },
+                    {
+                        value: '3',
+                        tips: ['a.配送额外股票1000股', 'b.配送一台平板电脑和1个¥10000祝播客套餐的收益权36个月', 'c.原有股票和共创值保留不变']
+                    },
+                    {
+                        value: '4',
+                        tips: ['a.5G手机置换成2台新视界平板电脑', 'b.原有股票和共创值保留不变']
+                    },
+                    {
+                        value: '5',
+                        tips: ['a.等待5G立体拍摄手机']
+                    }
+                ],
+                '3': [
+                    {
+                        value: '1',
+                        tips: ['a.置换2个(99份)¥100000祝播客套餐优惠', 'b.额外线下支付¥12000', 'c.原有共创值保留不变', '(有效期至2022年5月15日)']
+                    },
+                    {
+                        value: '2',
+                        tips: ['a.配送额外股票10000股', 'b.配送2个¥100000祝播客套餐的收益权96个', 'c.原有股票和共创值保留不变']
+                    },
+                    {
+                        value: '3',
+                        tips: ['a.等待5G立体拍摄手机']
+                    }
+                ],
+                '4': [
+                    {
+                        value: '1',
+                        tips: ['置换1个¥10000祝播客套餐的收益权6年']
+                    },
+                    {
+                        value: '2',
+                        tips: ['继续等待原来购买的产品']
+                    }
+                ]
+            }
         }
     },
     methods: {
@@ -164,7 +176,7 @@ export default {
     },
     watch: {
         displaceStatus(val) {
-            // console.log('watch displaceStatus', val)
+            console.log('watch displaceStatus', val)
             if (val !== 0) {
                 this.$refs.popup.open()
             } else {
@@ -181,9 +193,8 @@ export default {
                     // console.log('pageShowStatus', val, this.displaceCurrent)
                     if (expire) {
                         this.$store.dispatch('setDisplaceStatus')
-                        // this.$store.commit('set_displaceStatus', 3)
                     }
-                    // this.$store.commit('set_displaceStatus', 3)
+                    // this.$store.commit('set_displaceStatus', 4)
                 }
             }
         }
@@ -193,18 +204,28 @@ export default {
             return this.$store.state.displaceStatus
         },
         displaceData() {
-            const displaceArray = [undefined, '$16800', '$18800', '$188000']
-            const value = displaceArray[this.displaceStatus]
+            // const displaceArray = [undefined, '$16800', '$18800', '$188000']
+            // const value = displaceArray[this.displaceStatus]
+            const value = this.displacePlan[this.displaceStatus]
             let data = []
+            // if (value) {
+            //     data = this[`displacePlan${value}`]
+            // }
             if (value) {
-                data = this[`displacePlan${value}`]
+                data = value
             }
             return data
         },
+        displaceTitle() {
+            const resultArray = [null, '5G手机套餐的置换方案', '5G手机套餐的置换方案', '5G手机套餐的置换方案', '3D立体相机, 立体拍摄手机, 立体显示平板的置换方案']
+            const result = resultArray[this.displaceStatus]
+            return result
+        },
         displaceStatusTips() {
-            const tipsValues = [undefined, '$16800', '$18800', '$188000']
-            const tips = `5G手机套餐的置换方案（${tipsValues[this.displaceStatus]}）以下任选一项`
-            return tips
+            const resultArray = [undefined, '5G手机套餐的置换方案（$16800）以下任选一项', '5G手机套餐的置换方案（$18800）以下任选一项', '5G手机套餐的置换方案（$188000）以下任选一项', '3D立体相机, 立体拍摄手机, 立体显示平板的置换方案(以下任选一项)']
+            // const result = `5G手机套餐的置换方案（${resultArray[this.displaceStatus]}）以下任选一项`
+            const result = resultArray[this.displaceStatus]
+            return result
         }
     }
 }
