@@ -228,7 +228,6 @@ export default {
                     })
                         .then((res) => {
                             uni.hideLoading()
-                            // console.log('post|api/User/do_login', res)
                             this.$toastApp(res.msg)
                             setTimeout(() => {
                                 uni.switchTab({
@@ -237,7 +236,6 @@ export default {
                             }, 1000)
                         })
                         .catch((err) => {
-                            // console.log('post|api/User/do_login err', err)
                             uni.hideLoading()
                             this.$toastApp(err.msg)
                         })

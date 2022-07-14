@@ -49,7 +49,7 @@ export default {
                         // if (res.data.status === -1) {
                         //   this.$toastApp(res.data.msg)
                         // }
-                        // console.log('request', url, res)
+
                         if (res.data.status === 1) {
                             resolve(res.data)
                             uni.hideLoading()
@@ -60,7 +60,7 @@ export default {
                                 // console.log(res.data);
                                 // 解决app多次提示登录弹窗问题
                                 // #ifdef APP-PLUS
-                                // console.log(uni.getStorageSync("showLogin"));
+                                // console.log(uni.getStorageSync('showLogin'))
                                 if (uni.getStorageSync('showLogin')) return
                                 uni.setStorageSync('showLogin', true)
                                 // #endif
@@ -95,6 +95,12 @@ export default {
                             //   return
                             // }
                             // -100未登录
+
+                            // console.log('request', url, res.data)
+                            // 系统错误
+                            if (typeof res.data !== 'object' && typeof res.data === 'string') {
+                                this.$toastApp(res.data)
+                            }
                             reject(res.data)
                         }
                     },
