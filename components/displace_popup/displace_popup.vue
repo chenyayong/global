@@ -176,7 +176,7 @@ export default {
     },
     watch: {
         displaceStatus(val) {
-            console.log('watch displaceStatus', val)
+            // console.log('watch displaceStatus', val)
             if (val !== 0) {
                 this.$refs.popup.open()
             } else {
@@ -217,12 +217,12 @@ export default {
             return data
         },
         displaceTitle() {
-            const resultArray = [null, '5G手机套餐的置换方案', '5G手机套餐的置换方案', '5G手机套餐的置换方案', '3D立体相机, 立体拍摄手机, 立体显示平板的置换方案']
+            const resultArray = [null, '5G手机套餐的置换方案', '5G手机套餐的置换方案', '5G手机套餐的置换方案', '未发货的3D立体相机, 立体拍摄手机, 立体显示平板的置换方案']
             const result = resultArray[this.displaceStatus]
             return result
         },
         displaceStatusTips() {
-            const resultArray = [undefined, '5G手机套餐的置换方案（$16800）以下任选一项', '5G手机套餐的置换方案（$18800）以下任选一项', '5G手机套餐的置换方案（$188000）以下任选一项', '3D立体相机, 立体拍摄手机, 立体显示平板的置换方案(以下任选一项)']
+            const resultArray = [undefined, '5G手机套餐的置换方案（$16800）以下任选一项', '5G手机套餐的置换方案（$18800）以下任选一项', '5G手机套餐的置换方案（$188000）以下任选一项', '凡购买3D立体相机, 立体拍摄手机, 立体显示平板但未发货的会员, 请选择以下1项置换方案']
             // const result = `5G手机套餐的置换方案（${resultArray[this.displaceStatus]}）以下任选一项`
             const result = resultArray[this.displaceStatus]
             return result
