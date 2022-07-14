@@ -44,14 +44,18 @@
                             <view><radio :value="item.value" :checked="index === current" /></view>
                             <view>{{ item.name }}</view>
                         </view>
-                        <view class="uni-list-cell-tips" v-if="index === current && (index === 0 || index === 1)">
-                            <view>荟萃国际 现价：{{ stockPrice }} 汇率：{{ exchangeRate }}</view>
+                        <view class="uni-list-cell-tips" v-if="index === current">
+                            <view v-if="index === 0 || index === 1">荟萃国际 现价：{{ stockPrice }} 汇率：{{ exchangeRate }}</view>
                             <view v-if="tipsStatus">提现只限100的倍数</view>
                             <view v-else>
                                 <view v-if="index === 0"
-                                    >本次提现{{ money }}元 获得{{ count }}股 额外赠送{{ count2 }}股</view
+                                    >本次提现{{ money }}元， 获得{{ count }}股， 额外赠送{{ count2 }}股</view
                                 >
-                                <view v-if="index === 1">本次提现{{ money }}元 获得{{ count }}股</view>
+                                <view v-else-if="index === 1">
+                                    本次提现{{ money }}元， 获得{{ count }}股
+                                    <text v-if="users_type === 1 && user.is_tax === 1">，扣稅{{taxFee}}元</text>
+                                </view>
+                                <view v-else-if="index === 2 && users_type === 1 && user.is_tax === 1">本次提现{{ money }}元， 扣稅{{taxFee}}元</view>
                             </view>
                         </view>
                     </label>
@@ -195,7 +199,8 @@ export default {
             exchangeRate: null,
             timer: null,
             users_type: 1,
-            tax_path: ''
+            tax_path: '',
+            taxFee: 0
         }
     },
     onReady() {
@@ -238,6 +243,11 @@ export default {
         }
     },
     methods: {
+        count_tax(money) {
+            return this.$http('get|api/user/count_tax', {
+                money
+            })
+        },
         chooseTaxPath() {
             let that = this
             uni.chooseImage({
@@ -416,8 +426,13 @@ export default {
                 return
             }
             let title = `您选择的提现方式 ${this.items[this.current].name}`
+            let content = ''
+            if (this.user.is_tax === 1 && this.users_type === 1 && this.current !== 0) {
+                content = '个人提现需扣个人所得税，建议使用企业提现'
+            }
             uni.showModal({
                 title: title,
+                content: content,
                 success: (res) => {
                     if (res.confirm) {
                         switch (this.option_active) {
@@ -585,10 +600,22 @@ export default {
             } else {
                 this.remScroll()
             }
+        },
+        money(val) {
+            if (val && this.user.is_tax === 1) {
+                this.count_tax(val).then((res) => {
+                    // console.log('watch money', res)
+                    this.taxFee = res.result.taxFee
+                })
+                // .catch((error) => {
+                //     console.log('watch money error', error)
+                // })
+            }
         }
     },
     computed: {
         user() {
+            // console.log('this.$store.getters.get_user', this.$store.getters.get_user)
             return this.$store.getters.get_user
         },
         money() {

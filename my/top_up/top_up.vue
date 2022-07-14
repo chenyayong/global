@@ -4,13 +4,19 @@
             <view class="list-item" v-for="(item, index) in list" :key="index">
                 <view class="flex">
                     <view class="font-30">提现</view>
-                    <view class="font-36" :style="{ color: item.status > 0 ? '#989898' : '#FF4C57' }">{{ item.money }}</view>
+                    <view class="font-36" :style="{ color: item.status > 0 ? '#989898' : '#FF4C57' }">{{
+                        item.money
+                    }}</view>
                 </view>
                 <view class="flex font-26">
                     <view>{{ item.create_time }}</view>
                     <view>{{ item.status_deac }}</view>
                 </view>
-                <view class="flex" v-if="is_tax(item)" style="margin-top: 20rpx;">
+                <view v-if="item.remark" class="flex font-26" style="margin-top: 20rpx">
+                    <view class="font-26">备注</view>
+                    <view>{{ item.remark }}</view>
+                </view>
+                <view class="flex" v-if="is_tax(item)" style="margin-top: 20rpx">
                     <view class="font-26">缴税凭证</view>
                     <view>
                         <text v-if="item.tax_path" class="font-26">已提交</text>
@@ -90,7 +96,7 @@ export default {
             }
 
             // 演示判断是否所有文件均已上传成功
-            let isAll = [...this.files.values()].find(item => item.type !== 'success')
+            let isAll = [...this.files.values()].find((item) => item.type !== 'success')
             if (!isAll) {
                 console.log('已全部上传完毕')
                 const res = item.responseText
@@ -121,7 +127,7 @@ export default {
                 id: item.id,
                 tax_path: res.result
             })
-                .then(ret => {
+                .then((ret) => {
                     if (ret.status === 1) {
                         item.tax_path = res.result
                     }
@@ -137,18 +143,18 @@ export default {
             uni.chooseImage({
                 count: 1,
                 sizeType: 'compressed',
-                success: chooseImageRes => {
+                success: (chooseImageRes) => {
                     uni.showLoading({
                         mask: true,
                         title: '上传中'
                     })
-                    this.$uploadCom(chooseImageRes).then(res => {
+                    this.$uploadCom(chooseImageRes).then((res) => {
                         // that.formData.bank_license = res.result
                         this.$http('post|api/User/up_tax_path', {
                             id: item.id,
                             tax_path: res.result
                         })
-                            .then(ret => {
+                            .then((ret) => {
                                 // console.log('post|api/User/up_tax_path', ret)
                                 if (ret.status === 1) {
                                     this.list[index].tax_path = res.result
@@ -179,14 +185,15 @@ export default {
             this.$http('post|api/User/withdrawals_list', {
                 p: this.page
             })
-                .then(res => {
+                .then((res) => {
                     if (res.result.length === 0) {
                         this.have = false
                     } else {
                         this.list = [...this.list, ...res.result]
                     }
+                    // console.log('get_list', this.list)
                 })
-                .catch(err => {
+                .catch((err) => {
                     console.log('post|api/User/withdrawals_list err', err)
                 })
         },
