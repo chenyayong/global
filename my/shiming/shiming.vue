@@ -95,7 +95,7 @@
 				uni.chooseImage({
 					count: 1,
 					success: (chooseImageRes) => {
-						console.log(chooseImageRes);
+						// console.log(chooseImageRes);
 						this.card_front_image = chooseImageRes.tempFilePaths[0]
 						uni.showLoading({
 							mask:true,
@@ -113,7 +113,7 @@
 				uni.chooseImage({
 					count: 1,
 					success: (chooseImageRes) => {
-						console.log(chooseImageRes);
+						// console.log(chooseImageRes);
 						this.card_reverse_image = chooseImageRes.tempFilePaths[0]
 						uni.showLoading({
 							mask:true,
@@ -121,6 +121,7 @@
 						})
 						this.$uploadFile(chooseImageRes).then(res => {
 							this.afterSrc = res.result
+                            console.log(this.afterSrc);
 							uni.hideLoading()
 						})
 					}

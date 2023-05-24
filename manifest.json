@@ -2,7 +2,7 @@
     "name" : "NV新视界",
     "appid" : "__UNI__1DFF7F7",
     "description" : "",
-    "versionName" : "1.0.40",
+    "versionName" : "1.0.60",
     "versionCode" : 1002,
     "transformPx" : false,
     /* 5+App特有相关 */
@@ -72,7 +72,12 @@
                     "NSPhotoLibraryAddUsageDescription" : "App需要您的同意，才能写入相册，以便保存商品图片或者用户二维码。",
                     "NSCameraUsageDescription" : "App需要您的同意，才能访问相机，以便上传您的用户头像。"
                 },
-                "idfa" : false
+                "idfa" : false,
+                "capabilities" : {
+                    "entitlements" : {
+                        "com.apple.developer.associated-domains" : [ "applinks:static-b28b3d7c-fce1-42bc-bc78-0f80ca901e2c.bspapp.com" ]
+                    }
+                }
             },
             /* SDK配置 */
             "sdkConfigs" : {
@@ -82,14 +87,14 @@
                 "share" : {
                     "weixin" : {
                         "appid" : "wx76eaac5988f003ca",
-                        "UniversalLinks" : "https://app.global3.cn/ulink/"
+                        "UniversalLinks" : "https://static-b28b3d7c-fce1-42bc-bc78-0f80ca901e2c.bspapp.com/uni-universallinks/__UNI__1DFF7F7/"
                     }
                 },
                 "payment" : {
                     "weixin" : {
                         "__platform__" : [ "ios", "android" ],
                         "appid" : "wx76eaac5988f003ca",
-                        "UniversalLinks" : "https://app.global3.cn/ulink/"
+                        "UniversalLinks" : "https://static-b28b3d7c-fce1-42bc-bc78-0f80ca901e2c.bspapp.com/uni-universallinks/__UNI__1DFF7F7/"
                     },
                     "alipay" : {
                         "__platform__" : [ "ios", "android" ]
@@ -99,7 +104,7 @@
                     "weixin" : {
                         "appid" : "wxb9f4b833fce94107",
                         "appsecret" : "c4b0c97e98cf303d04b56d055bc7d278",
-                        "UniversalLinks" : "https://app.global3.cn/ulink/"
+                        "UniversalLinks" : "https://static-b28b3d7c-fce1-42bc-bc78-0f80ca901e2c.bspapp.com/uni-universallinks/__UNI__1DFF7F7/"
                     }
                 },
                 "ad" : {}
@@ -239,5 +244,6 @@
         },
         "title" : "Global嘉",
         "domain" : "https://app.global3plus.com"
-    }
+    },
+    "_spaceID" : "b28b3d7c-fce1-42bc-bc78-0f80ca901e2c"
 }

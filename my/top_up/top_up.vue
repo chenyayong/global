@@ -2,20 +2,20 @@
     <view>
         <view class="box" v-if="list.length > 0">
             <view class="list-item" v-for="(item, index) in list" :key="index">
-                <view class="flex">
-                    <view class="font-30">提现</view>
+                <view class="flex" style="justify-content: flex-end;">
+                    <!-- <view class="font-30">提现</view> -->
                     <view class="font-36" :style="{ color: item.status > 0 ? '#989898' : '#FF4C57' }">{{
                         item.money
                     }}</view>
                 </view>
                 <view class="flex font-26">
                     <view>{{ item.create_time }}</view>
-                    <view>{{ item.status_deac }}</view>
+                    <!-- <view>{{ item.status_deac }}</view> -->
                 </view>
-                <view v-if="item.remark" class="flex font-26" style="margin-top: 20rpx">
+              <!--  <view v-if="item.remark" class="flex font-26" style="margin-top: 20rpx">
                     <view class="font-26">备注</view>
                     <view>{{ item.remark }}</view>
-                </view>
+                </view> -->
                 <view class="flex" v-if="is_tax(item)" style="margin-top: 20rpx">
                     <view class="font-26">缴税凭证</view>
                     <view>

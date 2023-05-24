@@ -1,7 +1,7 @@
 苹果开发者账户: niceboyha@icloud.com Ip5201314
 
 宝塔：http://47.243.126.4:11058/ypm1105
-账号：4EZEp      密码： gd5dhqp39f
+账号：4EZEp      密码： ba996dfe9187cccd
 
 包名： io.chen.global
 应用签名：e61038b77b9d49fc5b6a3c49540a2c15
@@ -11,6 +11,11 @@ https://open.weixin.qq.com/
 3557735950@qq.com
 PW: global3@2021
 global3plus@qq.com
+
+Bundle ID: com.global3plus.app
+AppStore下载地址 https://apps.apple.com/cn/app/nv%E6%96%B0%E8%A7%86%E7%95%8C/id1600812817
+https://static-b28b3d7c-fce1-42bc-bc78-0f80ca901e2c.bspapp.com/uni-universallinks/__UNI__1DFF7F7/
+https://static-b28b3d7c-fce1-42bc-bc78-0f80ca901e2c.bspapp.com/
 
 // 管理后台
 https://app.global3plus.com/admin

@@ -11,7 +11,6 @@ import { store } from './stroe'
 import jweixin from 'jweixin-module'
 // #endif
 import serverImg from './components/server_img.vue'
-
 Vue.config.productionTip = false
 
 Vue.component('noMore', noMore)

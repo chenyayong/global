@@ -27,7 +27,7 @@ export default {
             // #endif
             let [method, url] = _url.split('|')
             method = method.toUpperCase()
-            let header = {
+            const header = {
                 // #ifndef H5
                 Cookie: uni.getStorageSync('PHPSESSID') ? 'PHPSESSID=' + uni.getStorageSync('PHPSESSID') : ''
                 // #endif
@@ -35,9 +35,16 @@ export default {
                 // 'Content-Type': "application/json"
             }
             return new Promise((resolve, reject) => {
+                // #ifdef H5
+                url = `/${url}`
+                // #endif
+                // #ifdef APP-PLUS
+                url = `${this.$serve}/${url}`
+                // #endif
                 uni.request({
-                    url: `${this.$serve}/${url}`,
+                    // url: `${this.$serve}/${url}`,
                     // url: `/${url}`,
+                    url: url,
                     method,
                     dataType: 'json',
                     timeout: 8000,
@@ -49,7 +56,6 @@ export default {
                         // if (res.data.status === -1) {
                         //   this.$toastApp(res.data.msg)
                         // }
-
                         if (res.data.status === 1) {
                             resolve(res.data)
                             uni.hideLoading()
@@ -168,7 +174,8 @@ export default {
         }
         Vue.prototype.$get_appId = async function(jsApiList, callbakc, bool = false, askUrl = window.location.href) {
             await this.$http('post|api/MobileBase/ajaxGetWxConfig', {
-                askUrl: encodeURIComponent(askUrl)
+                // askUrl: encodeURIComponent(askUrl)
+                askUrl: encodeURIComponent('https://app.global3plus.com/h5/#/index/create_order/')
             }).then(async(res) => {
                 await $wx.config({
                     debug: bool, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
@@ -190,10 +197,10 @@ export default {
                 title: '正在跳转登录'
             })
             setTimeout(() => {
-                let url = encodeURIComponent(window.location.origin + '/h5')
-                let appid = 'wx6c9f225863d2dae2' // 生产环境
+                const url = encodeURIComponent(window.location.origin + '/h5')
+                const appid = 'wx6c9f225863d2dae2' // 生产环境
                 // let appid = 'wxf922ca54b1cabef3' // 测试环境
-                let ur = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${url}&response_type=code&scope=snsapi_userinfo&state=STATE&connect_redirect=1#wechat_redirect`
+                const ur = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${url}&response_type=code&scope=snsapi_userinfo&state=STATE&connect_redirect=1#wechat_redirect`
                 window.location.href = ur
                 uni.hideLoading()
             }, 1000)
@@ -232,7 +239,7 @@ export default {
         // #endif
         Vue.prototype.$copy = function(val) {
             // #ifdef H5
-            let textarea = document.createElement('textarea')
+            const textarea = document.createElement('textarea')
             textarea.value = val
             textarea.style.position = 'fixed'
             textarea.style.zIndex = '-999'
@@ -261,7 +268,7 @@ export default {
                     filePath: file.tempFilePaths[0],
                     name: 'identification',
                     success: (res) => {
-                        let dataRes = JSON.parse(res.data)
+                        const dataRes = JSON.parse(res.data)
                         if (dataRes.status === 1) {
                             resolve(dataRes)
                         } else {
@@ -285,7 +292,7 @@ export default {
                     filePath: file.tempFilePaths[0],
                     name: 'company',
                     success: (res) => {
-                        let dataRes = JSON.parse(res.data)
+                        const dataRes = JSON.parse(res.data)
                         if (dataRes.status === 1) {
                             resolve(dataRes)
                         } else {
@@ -307,7 +314,7 @@ export default {
                     filePath: file,
                     name: 'head_pic',
                     success: (res) => {
-                        let dataRes = JSON.parse(res.data)
+                        const dataRes = JSON.parse(res.data)
                         if (dataRes.status === 1) {
                             resolve(dataRes)
                         } else {

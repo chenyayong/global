@@ -14,7 +14,7 @@
         <view class="list-box">
             <view v-for="(item, index) in list" :key="index" class="list-item">
                 <view>
-                    <view class="font-30">{{ item.type }}</view>
+                    <!-- <view class="font-30">{{ item.type }}</view> -->
                     <view class="font-26">{{ item.change_time }}</view>
                 </view>
                 <view class="font-34" :style="{ color: item.give_sum < 0 ? '#F41613' : '#333333' }">{{ item.give_sum }}</view>

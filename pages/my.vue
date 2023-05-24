@@ -47,22 +47,31 @@
                     <view class="font-22">赠品</view>
                 </view> -->
                 <view @tap="to_team">
-                    <view class="font-34 bold">{{ users.group_count || '-' }}</view>
-                    <view class="font-22">我的客户</view>
+                    <!-- <view class="font-34 bold">{{ users.group_count || '-' }}</view> -->
+                    <view class="font-34 bold">-</view>
+                    <view class="font-22">消費客戶</view>
                 </view>
-                <view @tap="to_contribution">
+                <view>
+                    <view class="font-34 bold">{{ users.contribution_points || '-' }}</view>
+                    <view class="font-22">贡献值</view>
+                </view>
+                <view>
+                    <view class="font-34 bold">{{ users.exp_value || '-' }}</view>
+                    <view class="font-22">共创值</view>
+                </view>
+                <!-- <view @tap="to_contribution">
                     <view class="font-34 bold">{{ users.contribution_points || '-' }}</view>
                     <view class="font-22">贡献值</view>
                 </view>
                 <view @tap="to_experience">
                     <view class="font-34 bold">{{ users.exp_value || '-' }}</view>
-                    <view class="font-22">联创积分</view>
-                </view>
+                    <view class="font-22">共创值</view>
+                </view> -->
                 <!-- #endif -->
             </view>
         </view>
 
-        <!-- #ifdef APP-PLUS -->
+        <!-- #ifdef APP-PLUSs -->
         <view class="wallet">
             <view class="my-wallet" @tap="to_mywallet">
                 <view class="font-30">我的钱包</view>
@@ -70,11 +79,11 @@
             </view>
             <view class="wallt-msg">
                 <view class="msg-item">
-                    <view class="wallet-small" @tap="to_reward(1)">
+                    <!-- <view class="wallet-small" @tap="to_reward(1)">
                         <image src="/static/ticheng.png"></image>
                         <view class="font-24">销售提成</view>
-                        <!-- <view class="font-30">{{users.into_commission}}</view> -->
-                    </view>
+                        <view class="font-30">{{users.into_commission}}</view>
+                    </view> -->
                     <view class="wallet-small" @tap="to_reward(3)">
                         <image src="/static/buzhu.png"></image>
                         <view class="font-24">培育补助</view>
@@ -131,47 +140,15 @@
         <!-- #endif -->
 
         <!-- #ifdef APP -->
-        <view class="wallet" style="margin-top: 20rpx;" v-if="jukerData && jukerData.length">
-            <view class="my-wallet">
-                <view class="font-30">JUKER祝播客</view>
-                <!-- <view class="font-26"></view> -->
-            </view>
-            <view class="juker wallt-msg">
-                <view class="msg-item" v-for="(item, index) in jukerData" :key="index">
-                    <view class="font-24 msg-item-tips">{{ item.phase }}</view>
-                    <view class="wallet-small">
-                        <image src="/static/juker-ticket.png"></image>
-                        <view class="font-24">祝播券</view>
-                        <view class="font-24">{{ item.give_sum }}</view>
-                    </view>
-                    <view class="wallet-small">
-                        <picker :disabled="item.status === 2" :value="bonusIndexs[index]" @change="bindTimerChange($event, index)" range-key="pick_time" :range="bonusList[index]">
-                            <image src="/static/juker-timer.png"></image>
-                            <view class="font-24">分红时间</view>
-                            <view class="font-24" v-if="item.status === 1">设置开始时间</view>
-                            <view class="font-24" v-if="item.status === 2" style="text-align: left;">
-                                <view>{{ item.start_time }} -</view>
-                                <view>{{ item.end_time }}</view>
-                            </view>
-                        </picker>
-                    </view>
-                    <view class="wallet-small">
-                        <image src="/static/juker-date.png"></image>
-                        <view class="font-24">分红周期(月)</view>
-                        <view class="font-24">{{ item.valid_month + item.free_month }}个月</view>
-                    </view>
-                    <view class="wallet-small">
-                        <image src="/static/juker-money.png"></image>
-                        <view class="font-24">分红总额</view>
-                        <view class="font-24">¥0</view>
-                        <view class="font-24" style="font-size: 20rpx;">(分红总额高于¥{{ item.goods_price }})</view>
-                    </view>
-                </view>
+        <view class="wallet" style="margin-top: -60rpx;">
+            <view class="my-wallet" style="border: none;padding-bottom: 0;" @click="to_juker">
+                <view class="font-30">JUKER祝播客({{ jukerData.length }})</view>
+                <view class="font-26" v-if="jukerData.length"></view>
             </view>
         </view>
         <!-- #endif -->
 
-        <view class="wallet" style="margin-top: 20rpx;" v-if="operator">
+        <view class="wallet" v-if="operator">
             <view class="my-wallet" @tap="to_operate">
                 <view class="font-30">所属运营中心</view>
                 <view class="font-26"></view>
@@ -204,17 +181,17 @@
                     <image src="/static/icon_4.png" mode="" />
                     <view class="font-24">我的钱包</view>
                 </view>
+                <view @tap="to_gift">
+                    <image src="/static/balance_icon.png"></image>
+                    <view class="font-24">赠品</view>
+                </view>
                 <view @tap="to_invite">
                     <image src="/static/icon_6.png" mode="" />
                     <view class="font-24">推广海报</view>
                 </view>
                 <view @tap="to_pay_account">
                     <image src="/static/icon_8.png" mode="" />
-                    <view class="font-24">收款账户</view>
-                </view>
-                <view @tap="server_img = true">
-                    <image src="/static/icon_10.png" mode="" />
-                    <view class="font-24">客服咨询</view>
+                    <view class="font-24">入账账户</view>
                 </view>
                 <view @tap="to_agent">
                     <image src="/static/icon_5.png" mode="" />
@@ -227,20 +204,27 @@
                 <!-- #endif -->
 
                 <!-- #ifdef H5 -->
-                <view @tap="to_information">
+                <!-- <view @tap="to_information">
                     <image src="/static/code.png" mode="" />
                     <view class="font-24">公司资讯群</view>
-                </view>
+                </view> -->
                 <!-- #endif -->
 
                 <view @tap="to_address">
                     <image src="/static/icon_7.png" mode="" />
                     <view class="font-24">地址管理</view>
                 </view>
-                <view @tap="my_collection">
+
+                <!-- #ifdef APP-PLUS -->
+               <!-- <view @tap="server_img = true">
+                    <image src="/static/icon_10.png" mode="" />
+                    <view class="font-24">客服咨询</view>
+                </view> -->
+                <!-- #endif -->
+                <!-- <view @tap="my_collection">
                     <image src="../static/test_1.svg" mode="" />
                     <view class="font-24">我的收藏</view>
-                </view>
+                </view> -->
                 <!-- <view @tap="to_coupon">
                     <image src="../static/coupon_icon.png" mode="" />
                     <view class="font-24">优惠券</view>
@@ -258,6 +242,7 @@
         <no-conditions v-model="conditions.dialog" :conditions="conditions" @change="conditions_change" :ok="is_ok"></no-conditions>
         <!-- 置换方案 -->
         <displacePopup :pageShowStatus="pageShowStatus" />
+        <juker-displace ref="jukerDisplace"></juker-displace>
     </view>
 </template>
 
@@ -310,11 +295,21 @@ export default {
                 })
             })
     },
+    onReady() {
+        // #ifdef APP-PLUS
+        if(this.$refs.jukerDisplace){
+            this.$refs.jukerDisplace.show()
+        }
+        // #endif
+    },
     onShow() {
         this.juker_list()
         this.show()
         // #ifdef APP-PLUS
         this.pageShowStatus = true
+        if(this.$refs.jukerDisplace){
+            this.$refs.jukerDisplace.show()
+        }
         // #endif
     },
     onHide() {
@@ -333,6 +328,13 @@ export default {
         }, 1000)
     },
     methods: {
+        to_juker() {
+            if (this.jukerData && this.jukerData.length) {
+                uni.navigateTo({
+                    url: '/my/juker/juker'
+                })
+            }
+        },
         giveSumTips(value) {
             // 100000 50000 || 100000  10000 || 50000
             console.log('giveSumTips', value)
@@ -452,6 +454,7 @@ export default {
             }
             return result
         },
+
         show() {
             this.$http('get|api/User/index').then(res => {
                 this.users = res.result.users
@@ -673,7 +676,8 @@ page {
     border-radius: 10rpx;
     width: 710rpx;
     margin: 0 auto;
-    margin-top: -110rpx;
+    margin-bottom: 20rpx;
+    // margin-top: -110rpx;
     background-color: #ffffff;
     position: relative;
 
@@ -785,6 +789,7 @@ page {
     border-radius: 10rpx;
     width: 710rpx;
     margin: 0 auto;
+    margin-bottom: 20rpx;
     background-color: #ffffff;
     /* #ifdef APP-PLUS */
     margin-top: 20rpx;

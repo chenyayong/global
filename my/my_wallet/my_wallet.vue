@@ -7,7 +7,7 @@
         <view class="top-oper flex-row">
             <view @click="handleWithdraw" url="/my/withdraw/withdraw" hover-class="none" class="con-oper">
                 <image src="/static/wallet_icon1.png" class="oper-icon" mode=""></image>
-                <text>提现</text>
+                <text>入账</text>
             </view>
             <navigator url="/my/transfer/transfer" hover-class="none" class="con-oper">
                 <image src="/static/wallet_icon2.png" class="oper-icon" mode=""></image>
@@ -15,7 +15,7 @@
             </navigator>
             <navigator url="/my/top_up/top_up" hover-class="none" class="con-oper">
                 <image src="/static/wallet_icon3.png" class="oper-icon" mode=""></image>
-                <text>提现记录</text>
+                <text>入账记录</text>
             </navigator>
         </view>
         <view class="option">
@@ -24,8 +24,8 @@
 
         <view class="con-li flex-row bdb-1px" v-for="(item, index) in option[option_active].list" :key="index">
             <view class="li-left">
-                <view class="left-name">{{ item.desc }}</view>
-                <text>{{ item.change_data }}</text>
+                <!-- <view class="left-name">{{ item.desc }}</view> -->
+                <text>{{ item.change_time }}</text>
             </view>
             <view class="li-right">
                 <view class="right-num" :style="{ color: item.user_money < 0 ? '#FF4C57' : '#333333' }">{{ item.user_money }}</view>
@@ -120,11 +120,11 @@ export default {
                 type: item.value,
                 p: item.page
             }).then(res => {
+                this.money = res.result.money
                 if (res.result.account_log.length === 0) {
                     item.have = false
                     return
                 }
-                this.money = res.result.money
                 if (bool) {
                     item.list = []
                 }

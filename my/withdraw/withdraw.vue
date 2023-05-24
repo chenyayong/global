@@ -2,67 +2,56 @@
     <view class="content-box">
         <view class="option">
             <template v-for="(item, index) in option">
-                <view
-                    v-if="item.open"
-                    @tap="to_active(item, index)"
-                    :key="index"
-                    :class="[item.active ? 'active' : '']"
-                    >{{ item.label }}</view
-                >
+                <view v-if="item.open" @tap="to_active(item, index)" :key="index" :class="[item.active ? 'active' : '']">{{ item.label }}</view>
             </template>
         </view>
         <view class="from">
             <view class="font-30 flex-tip">
-                <view style="width: 240rpx">收款账户</view>
+                <view style="width: 240rpx">入账账户</view>
                 <view @tap="choose_card">
                     <view class="wechat">{{ option[option_active].name }}</view>
-                    <view class="c7">提现手续费{{ charge.toFixed(2) }}%</view>
+                    <view class="c7">入账手续费{{ charge.toFixed(2) }}%</view>
                 </view>
             </view>
-            <view class="font-30" style="margin-top: 50rpx">提现金额</view>
+            <view class="font-30" style="margin-top: 50rpx">入账金额</view>
             <view class="account-input-box">
                 <view class="font-48">￥</view>
-                <input
-                    class="account-input inline"
-                    @blur="handleUserMoney"
-                    v-model="option[option_active].from.money"
-                    type="number"
-                    :placeholder="`请输入金额`"
-                />
+                <input class="account-input inline" @blur="handleUserMoney" v-model="option[option_active].from.money" type="number" :placeholder="`请输入金额`" />
             </view>
 
             <view class="font-26 flex">
-                <view>提现只限100的倍数 可提现余额{{ user_money }}</view>
-                <view class="all-with" @tap="all_number">全部提现</view>
+                <view>入账只限100的倍数 可入账余额{{ user_money }}</view>
+                <view class="all-with" @tap="all_number">全部入账</view>
             </view>
 
-            <view class="font-30" style="margin-top: 50rpx">佣金提现</view>
+            <!-- #ifdef APP-PLUS -->
+            <view class="font-30" style="margin-top: 50rpx">佣金入账</view>
             <view class="uni-list">
                 <radio-group @change="radioChange">
                     <label v-for="(item, index) in items" :key="item.value">
                         <view class="uni-list-cell uni-list-cell-pd">
-                            <view><radio :value="item.value" :checked="index === current" /></view>
+                            <view><radio :value="index" :checked="index === current" /></view>
                             <view>{{ item.name }}</view>
                         </view>
                         <view class="uni-list-cell-tips" v-if="index === current">
-                            <view v-if="index === 0 || index === 1">荟萃国际 现价：{{ stockPrice }} 汇率：{{ exchangeRate }}</view>
-                            <view v-if="tipsStatus">提现只限100的倍数</view>
+                            <!-- <view v-if="index === 0 || index === 1">荟萃国际 现价：{{ stockPrice }} 汇率：{{ exchangeRate }}</view> -->
+                            <view v-if="tipsStatus">入账只限100的倍数</view>
                             <view v-else>
-                                <view v-if="index === 0"
-                                    >本次提现{{ money }}元， 获得{{ count }}股， 额外赠送{{ count2 }}股</view
-                                >
+                                <!-- <view v-if="index === 0">本次入账{{ money }}元， 获得{{ count }}股， 额外赠送{{ count2 }}股</view>
                                 <view v-else-if="index === 1">
-                                    本次提现{{ money }}元， 获得{{ count }}股
-                                    <text v-if="users_type === 1 && user.is_tax === 1">，扣稅{{taxFee}}元</text>
+                                    本次入账{{ money }}元， 获得{{ count }}股
+                                    <text v-if="users_type === 1 && user.is_tax === 1">，扣稅{{ taxFee }}元</text>
                                 </view>
-                                <view v-else-if="index === 2 && users_type === 1 && user.is_tax === 1">本次提现{{ money }}元， 扣稅{{taxFee}}元</view>
+                                <view v-else-if="index === 2 && users_type === 1 && user.is_tax === 1">本次入账{{ money }}元， 扣稅{{ taxFee }}元</view> -->
+                                <!-- <view v-if="users_type === 1 && user.is_tax === 1">本次入账{{ money }}元， 扣稅{{ taxFee }}元</view> -->
                             </view>
                         </view>
                     </label>
                 </radio-group>
             </view>
+            <!-- #endif -->
 
-            <view class="font-30" style="margin-top: 50rpx">提现方式</view>
+            <view class="font-30" style="margin-top: 50rpx">入账方式</view>
             <view class="uni-list">
                 <view class="uni-list-cell uni-list-cell-pd">
                     <radio-group @change="usersTypeChange">
@@ -82,17 +71,10 @@
                 </view>
             </view>
 
-            <view class="buttom font-32" @tap="subimt">立即提现</view>
+            <view class="buttom font-32" @tap="subimt">确认</view>
         </view>
         <view class="rich-box"><rich-text :nodes="contxt"></rich-text></view>
-        <pay-account
-            v-model="card_dialog"
-            @change="change_pay"
-            @to_add="to_add"
-            :bank_id="option[1].from.bank_id"
-            :go="false"
-            :list="card_list"
-        ></pay-account>
+        <pay-account v-model="card_dialog" @change="change_pay" @to_add="to_add" :bank_id="option[1].from.bank_id" :go="false" :list="card_list"></pay-account>
         <!-- 支付密码 -->
         <!-- <pay-password ref="pay" v-model="pay_dialog" :show="false" @check_word="save"></pay-password> -->
         <pay-password ref="payPassword" @onChange="payPwdTap"></pay-password>
@@ -111,16 +93,16 @@ export default {
         return {
             items: [
                 {
-                    name: '100%荟萃国际（额外赠送5%）',
-                    value: 0
-                },
-                {
-                    name: '50%现金+50%荟萃国际',
+                    name: '100%荟萃国际',
                     value: 1
                 },
+                // {
+                //     name: '50%现金+50%荟萃国际',
+                //     value: 2
+                // },
                 {
                     name: '100%现金',
-                    value: 2
+                    value: 3
                 }
             ],
             current: 0,
@@ -215,13 +197,13 @@ export default {
         }
         await this.getRule()
         await this.$http('get|api/User/is_paypwd')
-            .then((res) => {
+            .then(res => {
                 this.no_password = true // 没有密码
                 // console.log('is_paypwd success', res)
             })
-            .catch((err) => {
+            .catch(err => {
                 console.log('is_paypwd error', err)
-                this.get_type().then((_) => {
+                this.get_type().then(_ => {
                     this.option[0].name = `微信${this.user.nickname}`
                 })
             })
@@ -253,12 +235,12 @@ export default {
             uni.chooseImage({
                 count: 1,
                 sizeType: 'compressed',
-                success: (chooseImageRes) => {
+                success: chooseImageRes => {
                     uni.showLoading({
                         mask: true,
                         title: '上传中'
                     })
-                    this.$uploadCom(chooseImageRes).then((res) => {
+                    this.$uploadCom(chooseImageRes).then(res => {
                         that.tax_path = res.result
                         uni.hideLoading()
                         that.$forceUpdate()
@@ -280,13 +262,13 @@ export default {
             uni.showLoading({
                 title: '加载中...'
             })
-            this.$http('get|api/user/apply_partner').then((res) => {
+            this.$http('get|api/user/apply_partner').then(res => {
                 // console.log('get|api/user/apply_partner', res)
                 const user_embassy = res.result.user_embassy
                 if (user_embassy.status === -3) {
                     uni.showModal({
                         content: '您还没有企业认证，是否进行企业认证？',
-                        success: (res) => {
+                        success: res => {
                             if (res.confirm) {
                                 uni.navigateTo({
                                     url: '/my/agent/agent'
@@ -312,7 +294,7 @@ export default {
             this.timer = setInterval(() => {
                 this.$http('get|api/User/withdrawals', {
                     bank_type: this.option[this.option_active].bank_type
-                }).then((res) => {
+                }).then(res => {
                     this.stockPrice = res.result.stockPrice
                     this.exchangeRate = res.result.exchangeRate
                     // console.log('getStockPrice', res)
@@ -324,7 +306,7 @@ export default {
             let remainder = value % 100
             if (remainder !== 0 || value === 0) {
                 uni.showToast({
-                    title: '提现只限100的倍数',
+                    title: '入账只限100的倍数',
                     icon: 'none'
                 })
             }
@@ -332,7 +314,7 @@ export default {
         getRule() {
             this.$http('post|api/Article/regulation', {
                 id: 9
-            }).then((res) => {
+            }).then(res => {
                 this.contxt = res.result.topic_content
             })
         },
@@ -340,10 +322,10 @@ export default {
             // console.log('bank_type---', this.option_active, this.option[this.option_active].bank_type)
             return this.$http('get|api/User/withdrawals', {
                 bank_type: this.option[this.option_active].bank_type
-            }).then((res) => {
+            }).then(res => {
                 console.log('get_type', res)
                 // withdraw_type  1是银行卡，2是微信，3是支付宝,4是PayPal
-                res.result.withdraw_type.forEach((el) => {
+                res.result.withdraw_type.forEach(el => {
                     switch (el) {
                         case '1':
                             this.option[2].open = true
@@ -362,7 +344,7 @@ export default {
                 if (res.result.withdraw_type.length !== 0) {
                     let withdraw_type = res.result.withdraw_type
                     // let type = +withdraw_type[0]
-                    this.option.forEach((el) => {
+                    this.option.forEach(el => {
                         el.active = false
                     })
                     // let find = this.option.findIndex(ro => ro.bank_type == type)
@@ -374,10 +356,10 @@ export default {
                 this.charge = +res.result.charge
                 this.distribut_min = +res.result.distribut_min
                 this.card_list = res.result.bankcard_list
-                    ? res.result.bankcard_list.map((row) => {
-                        row.active = false
-                        return row
-                    })
+                    ? res.result.bankcard_list.map(row => {
+                          row.active = false
+                          return row
+                      })
                     : []
             })
         },
@@ -385,27 +367,27 @@ export default {
             // 2,3,1,4
             console.log('info_option', arr)
             // console.log('info_option', arr.find((ro) => ro === 2), arr.find((ro) => ro === 3), arr.find((ro) => ro === 1))
-            let find_2 = arr.find((ro) => ro == 2)
+            let find_2 = arr.find(ro => ro == 2)
             if (find_2) {
                 this.option[0].active = true
                 this.option_active = 0
                 return
             }
-            let find_3 = arr.find((ro) => ro == 3)
+            let find_3 = arr.find(ro => ro == 3)
             if (find_3) {
                 this.option[1].active = true
                 this.option_active = 1
                 return
             }
 
-            let find_1 = arr.find((ro) => ro == 1)
+            let find_1 = arr.find(ro => ro == 1)
             if (find_1) {
                 this.option[2].active = true
                 this.option_active = 2
                 return
             }
 
-            let find_4 = arr.find((ro) => ro == 4)
+            let find_4 = arr.find(ro => ro == 4)
             if (find_4) {
                 this.option[3].active = true
                 this.option_active = 3
@@ -418,22 +400,23 @@ export default {
         },
         subimt() {
             if (this.option[this.option_active].from.money < this.distribut_min) {
-                this.$toastApp(`提现不能小于${this.distribut_min}`, 'none')
+                this.$toastApp(`入账不能小于${this.distribut_min}`, 'none')
                 return
             }
             if (!/^(-?\d+)(\.\d+)?$/.test(this.option[this.option_active].from.money)) {
                 this.$toastApp('金额格式不正确', 'none')
                 return
             }
-            let title = `您选择的提现方式 ${this.items[this.current].name}`
+			console.log('this.items[this.current]',this.items[this.current])
+            let title = `您选择的入账方式 ${this.items[this.current].name}`
             let content = ''
             if (this.user.is_tax === 1 && this.users_type === 1 && this.current !== 0) {
-                content = '个人提现需扣个人所得税，建议使用企业提现'
+                content = '个人入账需扣个人所得税，建议使用企业入账'
             }
             uni.showModal({
                 title: title,
                 content: content,
-                success: (res) => {
+                success: res => {
                     if (res.confirm) {
                         switch (this.option_active) {
                             case 0:
@@ -498,18 +481,21 @@ export default {
                 switch (this.option_active) {
                     case 0:
                         this.option[0].from.paypwd = this.payPwd
-                        this.option[0].from.money_type = this.current + 1
+                        // this.option[0].from.money_type = this.current + 1
+						// this.option[0].from.money_type = 3
+						this.option[0].from.money_type = this.items[this.current].value
+                        
                         this.option[0].from.users_type = this.users_type
                         if (this.option[0].from.money_type !== 1 && this.users_type === 2) {
                             this.option[0].from.tax_path = this.tax_path
                         }
                         console.log('this.option[0].from', this.option[0].from)
                         this.$http('post|api/User/withdrawals', this.option[0].from)
-                            .then((res) => {
+                            .then(res => {
                                 this.$toastApp(res.msg)
                                 uni.navigateBack()
                             })
-                            .catch((e) => {
+                            .catch(e => {
                                 this.$toastApp(e.msg, 'none')
                                 this.$refs.pay.passworld = []
                             })
@@ -518,18 +504,21 @@ export default {
                     case 2:
                     case 3:
                         this.option[this.option_active].from.paypwd = this.payPwd
-                        this.option[this.option_active].from.money_type = this.current + 1
+                        // this.option[this.option_active].from.money_type = this.current + 1
+						// this.option[this.option_active].from.money_type = 3
+						this.option[this.option_active].from.money_type = this.items[this.current].value
+                        
                         this.option[this.option_active].from.users_type = this.users_type
                         if (this.option[this.option_active].from.money_type !== 1 && this.users_type === 2) {
                             this.option[this.option_active].from.tax_path = this.tax_path
                         }
                         console.log('this.option[this.option_active]', this.option[this.option_active].from)
                         this.$http('post|api/User/withdrawals', this.option[this.option_active].from)
-                            .then((res) => {
+                            .then(res => {
                                 this.$toastApp(res.msg)
                                 uni.navigateBack()
                             })
-                            .catch((e) => {
+                            .catch(e => {
                                 this.$toastApp(e.msg, 'none')
                                 this.$refs.pay.passworld = []
                             })
@@ -546,7 +535,7 @@ export default {
             // 选择收款账号
         },
         to_active(item, index) {
-            this.option.forEach((el) => {
+            this.option.forEach(el => {
                 el.active = false
             })
             item.active = true
@@ -557,17 +546,17 @@ export default {
                 this.$http('get|api/User/withdrawals', {
                     bank_type: this.option[this.option_active].list
                 })
-                    .then((res) => {
+                    .then(res => {
                         console.log('get|api/User/withdrawals', res)
                         this.card_list = res.result.bankcard_list
-                            ? res.result.bankcard_list.map((row) => {
-                                row.active = false
-                                return row
-                            })
+                            ? res.result.bankcard_list.map(row => {
+                                  row.active = false
+                                  return row
+                              })
                             : []
                         this.card_dialog = true
                     })
-                    .catch((err) => {
+                    .catch(err => {
                         console.log('get|api/User/withdrawals err', err)
                     })
             }
@@ -603,7 +592,7 @@ export default {
         },
         money(val) {
             if (val && this.user.is_tax === 1) {
-                this.count_tax(val).then((res) => {
+                this.count_tax(val).then(res => {
                     // console.log('watch money', res)
                     this.taxFee = res.result.taxFee
                 })

@@ -2,8 +2,8 @@
     <view>
         <view class="from">
             <view class="from-item">
-                <view class="font-30">姓名</view>
-                <input type="text" v-model="from.realname" class="font-30" placeholder="请输入真实姓名" placeholder-class="D7" />
+                <view class="font-30">企业名称</view>
+                <input type="text" v-model="from.realname" class="font-30" placeholder="请输入企业名称" placeholder-class="D7" />
             </view>
             <view class="from-item">
                 <view class="font-30">身份证</view>

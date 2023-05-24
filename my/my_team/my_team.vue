@@ -1,14 +1,15 @@
 <template>
     <view class="page">
         <view class="header">
-            <view>
+            <!-- <view>
                 <view class="font-26 op">直推客户数(个)</view>
                 <view class="font-56">{{ directly_num }}</view>
             </view>
-            <view class="dev"></view>
+            <view class="dev"></view> -->
             <view>
-                <view class="font-26 op">团队业绩</view>
-                <view class="font-56">{{ total_amount }}</view>
+                <view class="font-26 op">消费客户</view>
+                <!-- <view class="font-56">{{ total_amount }}</view> -->
+                <view class="font-56">-</view>
             </view>
 
             <!-- <view class="flex">
@@ -22,7 +23,7 @@
                 </view>
             </view> -->
         </view>
-        <view class="title font-32">· 团队明细 ·</view>
+        <view class="title font-32">· 客户明细 ·</view>
         <template v-if="list.length > 0">
             <view class="list-box">
                 <view class="list-item" v-for="(item, index) in list" :key="index" @tap="to_detail(item)">
@@ -33,14 +34,14 @@
                                 <view class="font-28">{{ item.nickname }}{{ item.mobile ? `(${item.mobile})` : `` }}</view>
                                 <!-- <view class="font-32" v-if="item.group_num > 0">{{ item.group_num }}个</view> -->
                             </view>
-                            <view class="font-26 flex">
+                            <!-- <view class="font-26 flex">
                                 <view>{{ item.level_name }}</view>
-                            </view>
+                            </view> -->
                         </view>
                     </view>
                     <view class="list-item-body">
-                        <view v-if="item.group_num > 0">{{ item.group_num }}个</view>
-                        <view v-if="item.total_amount > 0">{{ item.total_amount }} 业绩</view>
+                        <!-- <view v-if="item.group_num > 0">{{ item.group_num }}个</view> -->
+                        <!-- <view v-if="item.total_amount > 0">{{ item.total_amount }} 业绩</view> -->
                     </view>
                 </view>
             </view>
@@ -102,13 +103,13 @@ export default {
 </script>
 
 <style lang="scss">
-    .dev{
-        width: 1px;
-        height: 100rpx;
-        min-height: 100rpx;
-        background-color: #fff;
-        margin: 0 40rpx;
-    }
+.dev {
+    width: 1px;
+    height: 100rpx;
+    min-height: 100rpx;
+    background-color: #fff;
+    margin: 0 40rpx;
+}
 .page {
     min-height: 100vh;
     // #ifdef H5

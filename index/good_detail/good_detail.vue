@@ -67,7 +67,7 @@
                 <view class="is-old-price inline">原价: {{ goods.market_price }}元</view>
             </view>
             <view>{{ goods.is_free_shipping === 1 ? '快递包邮' : '不包邮' }}</view>
-            <view>已售{{goods.sales_sum}}件</view>
+            <!-- <view>已售{{goods.sales_sum}}件</view> -->
         </view>
         <view class="solid"></view>
         <!-- <view class="have-more" @tap="service = true">
@@ -83,7 +83,7 @@
         <view class="solid" style="margin:0"></view>
         <view class="flex">
             <view class="font-28 label">供货商</view>
-            <view class="font-28" style="margin-left: 30rpx;">本产品由 新视界集团 提供</view>
+            <view class="font-28" style="margin-left: 30rpx;">{{ goods.supplier }}</view>
         </view>
 
         <view class="solid" style="margin:0"></view>
@@ -596,7 +596,7 @@ export default {
     background-color: #f7f7f7;
     margin-top: 30rpx;
 }
-.flex{
+.flex {
     padding: 0 30rpx;
     height: 100rpx;
     box-sizing: border-box;
