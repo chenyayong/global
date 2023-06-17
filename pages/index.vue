@@ -156,7 +156,7 @@
             </view>
         </view> -->
         <!-- #ifdef APP-PLUS -->
-        <view class="new-bg" v-if="newDialog && switchs.download_switch == 1" @touchmove.stop.prevent @tap="newDialog = false">
+        <view class="new-bg" v-if="newDialog && switchs.download_switch == 1" @touchmove.stop.prevent @tap="downloadChange">
             <view>
                 <view class="h5-poster">
                     <view class="box">
@@ -166,6 +166,7 @@
                 <!-- <image class="close-dialog" src="/static/close_dialog.png" @tap="newDialog = false"></image> -->
             </view>
         </view>
+        
         <!-- #endif -->
 
         <!-- 置换方案 -->
@@ -179,6 +180,7 @@
     import bindAccount from 'index/components/bind_account.vue'
     import displacePopup from '@/components/displace_popup/displace_popup.vue'
     // import showImg from 'components/show_img.vue'
+    
     var _this
     export default {
         data() {
@@ -255,7 +257,7 @@
                     //     }
                     // }
                 ],
-                newDialog: true,
+                newDialog: false,
                 scroll_good: [],
                 list: [],
                 page: 1,
@@ -345,6 +347,7 @@
         },
         onShow() {
             // #ifdef APP-PLUS
+            this.init()
             this.pageShowStatus = true
             this.updateApp()
             if(this.$refs.jukerDisplace){
@@ -409,6 +412,23 @@
             // #endif
         },
         methods: {
+            downloadExpire() {
+                const expire = parseInt(uni.getStorageSync('download_expire'))
+                const distance = 1 * 15 * 1000
+                const timestamp = Date.now()
+                console.log(timestamp, expire, distance, timestamp - expire)
+                let result = false
+                if (!expire) {
+                    result = true
+                } else if (timestamp - expire >= distance) {
+                    result = true
+                }
+                return result
+            },
+            downloadChange() {
+                this.newDialog = false
+                uni.setStorageSync('download_expire', Date.now())
+            },
             checkC(item) {
                 this.checkCountry = item
                 this.showCountry = false
@@ -558,8 +578,13 @@
                     // uni.setNavigationBarTitle({
                     //     title: res.result.title
                     // })
-
                     this.switchs = res.result.switch
+                    if(this.switchs.download_switch === 1){
+                        const downloadExpire = this.downloadExpire()
+                        if(downloadExpire){
+                            this.newDialog = true
+                        }
+                    }                 
                     // console.log('this.switchs', this.switchs)
                     this.option = res.result.cat_list.map(row => {
                         row.ad_code = this.$image + row.ad_code
