@@ -62,8 +62,8 @@
                 <!-- <view @tap="to_contribution">
                     <view class="font-34 bold">{{ users.contribution_points || '-' }}</view>
                     <view class="font-22">贡献值</view>
-                </view>
-                <view @tap="to_experience">
+                </view> -->
+                <!-- <view @tap="to_experience">
                     <view class="font-34 bold">{{ users.exp_value || '-' }}</view>
                     <view class="font-22">共创值</view>
                 </view> -->

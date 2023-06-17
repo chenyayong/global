@@ -34,10 +34,9 @@
                             <view>{{ item.name }}</view>
                         </view>
                         <view class="uni-list-cell-tips" v-if="index === current">
-                            <view v-if="item.value === 1">荟萃国际 现价：{{ stockPrice }} 汇率：{{ exchangeRate }}</view>
-							<view v-if="item.value === 1 && money">本次入账{{ money }}元， 获得{{ count }}股</view>
-                            <view>入账只限100的倍数</view>
-                            <view>
+                            <!-- <view v-if="index === 0 || index === 1">荟萃国际 现价：{{ stockPrice }} 汇率：{{ exchangeRate }}</view> -->
+                            <view v-if="tipsStatus">入账只限100的倍数</view>
+                            <view v-else>
                                 <!-- <view v-if="index === 0">本次入账{{ money }}元， 获得{{ count }}股， 额外赠送{{ count2 }}股</view>
                                 <view v-else-if="index === 1">
                                     本次入账{{ money }}元， 获得{{ count }}股
@@ -613,9 +612,9 @@ export default {
             const option_active = this.option_active
             let money = option[option_active].from.money
             // let count = Math.floor(money / this.stockPrice)
-            // if (this.current === 1) {
-            //     money = money / 2
-            // }
+            if (this.current === 1) {
+                money = money / 2
+            }
             return money
         },
         count() {
@@ -623,10 +622,10 @@ export default {
             const option_active = this.option_active
             let money = option[option_active].from.money
             let count = Math.floor((money * this.exchangeRate) / this.stockPrice)
-            // if (this.current === 1) {
-            //     money = money / 2
-            //     count = Math.floor((money * this.exchangeRate) / this.stockPrice)
-            // }
+            if (this.current === 1) {
+                money = money / 2
+                count = Math.floor((money * this.exchangeRate) / this.stockPrice)
+            }
             return count
         },
         count2() {
